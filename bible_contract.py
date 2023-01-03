@@ -1,5 +1,9 @@
 from urllib import request
 import json
+import platform
+
+# determine platform for file gens later
+plattype = platform.system()
 
 # set up skeleton for API requests
 def runrequest(requesturl):
@@ -169,7 +173,10 @@ class Passage:
 
     # set up behavior for generating LaTeX file with skeleton for modified version of expex
     def tolatex(self):
-        outputfile = open("Desktop\\passage_latex.tex", "w", encoding="utf-8")
+        if plattype == 'Windows':
+            outputfile = open("Desktop\\passage_latex.tex", "w", encoding="utf-8")
+        else:
+            outputfile = open("Desktop/passage_latex.tex", "w", encoding="utf-8")
         if isinstance(self.text, str):
             words = self.text.split()
             for word in words:
@@ -202,7 +209,10 @@ else:
         wordcount += len(words)
 
 # open up default output file and write to it
-outputfile = open("Desktop\\Bible section.txt","w", encoding="utf-8")
+if plattype == 'Windows':
+    outputfile = open("Desktop\\Bible section.txt","w", encoding="utf-8")
+else:
+    outputfile = open("Desktop/Bible section.txt","w", encoding="utf-8")
 outputfile.write(headline)
 secondline = "Wordcount is: " + str(wordcount) + "\n\n"
 outputfile.write(secondline)
