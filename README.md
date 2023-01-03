@@ -1,4 +1,4 @@
-# example-scripts
+# example-work
 This repository contains some examples of my scripting work for potential employers. Not included are my Node.js scripts for testing automation which are property of my employer.
 
 A description of the scripts contained in this repository are as follows:
