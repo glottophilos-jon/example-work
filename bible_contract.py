@@ -4,6 +4,7 @@ import platform
 
 # determine platform for file gens later
 plattype = platform.system()
+extensions = [".txt",".tex"]
 
 # set up skeleton for API requests
 def runrequest(requesturl):
@@ -173,10 +174,12 @@ class Passage:
 
     # set up behavior for generating LaTeX file with skeleton for modified version of expex
     def tolatex(self):
+        windowsfilename = "Desktop\\" + headline + extensions[1]
+        otherfilename = "Desktop/" + headline + extensions[1]
         if plattype == 'Windows':
-            outputfile = open("Desktop\\passage_latex.tex", "w", encoding="utf-8")
+            outputfile = open(windowsfilename, "w", encoding="utf-8")
         else:
-            outputfile = open("Desktop/passage_latex.tex", "w", encoding="utf-8")
+            outputfile = open(otherfilename, "w", encoding="utf-8")
         if isinstance(self.text, str):
             words = self.text.split()
             for word in words:
@@ -188,7 +191,11 @@ class Passage:
             for line in self.text:
                 words = line.split()
                 for word in words:
-                    latex = "\\thb{" + word + "}[\\te{}/\\te{}]{}\n"
+                    # this handles an initial attempt at verse numbering, you will need to review it manually
+                    if words.index(word) == 0:
+                        latex = "\\thb{" + word + "}[\\te{}/\\te{}]{y}\n"
+                    else:
+                        latex = "\\thb{" + word + "}[\\te{}/\\te{}]{}\n"
                     outputfile.write(latex)
             outputfile.close()
 
@@ -209,10 +216,15 @@ else:
         wordcount += len(words)
 
 # open up default output file and write to it
+windowsfilename = "Desktop\\" + headline + extensions[0]
+otherfilename = "Desktop/" + headline + extensions[0]
+
 if plattype == 'Windows':
-    outputfile = open("Desktop\\Bible section.txt","w", encoding="utf-8")
+    finalname = windowsfilename
+    outputfile = open(windowsfilename,"w", encoding="utf-8")
 else:
-    outputfile = open("Desktop/Bible section.txt","w", encoding="utf-8")
+    finalname = otherfilename
+    outputfile = open(otherfilename,"w", encoding="utf-8")
 outputfile.write(headline)
 secondline = "Wordcount is: " + str(wordcount) + "\n\n"
 outputfile.write(secondline)
@@ -224,7 +236,7 @@ else:
         outputfile.write(newline)
 outputfile.close()
 
-print("File written successfully! Check the output in Desktop\\Bible section.txt")
+print("File written successfully! Check the output in ",finalname)
 
 # check if the user wants to generate a LaTeX file and write one if they want
 validlatex = False
