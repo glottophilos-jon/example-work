@@ -174,8 +174,8 @@ class Passage:
 
     # set up behavior for generating LaTeX file with skeleton for modified version of expex
     def tolatex(self):
-        windowsfilename = "Desktop\\" + headline + extensions[1]
-        otherfilename = "Desktop/" + headline + extensions[1]
+        windowsfilename = "Desktop\\" + headline.replace(":", "_") + extensions[1]
+        otherfilename = "Desktop/" + headline.replace(":", "_") + extensions[1]
         if plattype == 'Windows':
             outputfile = open(windowsfilename, "w", encoding="utf-8")
         else:
@@ -215,8 +215,8 @@ else:
         wordcount += len(words)
 
 # open up default output file and write to it
-windowsfilename = "Desktop\\" + headline + extensions[0]
-otherfilename = "Desktop/" + headline + extensions[0]
+windowsfilename = "Desktop\\" + headline.replace(":", "_") + extensions[0]
+otherfilename = "Desktop/" + headline.replace(":", "_") + extensions[0]
 
 if plattype == 'Windows':
     finalname = windowsfilename
