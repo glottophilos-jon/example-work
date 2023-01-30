@@ -9,3 +9,5 @@ This script allows the user to select any Bible verse or contiguous group of Bib
 ## [skyrim_script.py](skyrim_script.py):
 This script is a simple startup application that alerts the user to the fact that a new version of the Skyrim mod SKSE is now available using the [NexusMods API](https://app.swaggerhub.com/apis-docs/NexusMods/nexus-mods_public_api_params_in_form_data/1.0#/).
 
+## [Expexmod](Expexmod):
+This folder contains several different files which together constitute a modified version of the expex LaTeX package for linguistics. I have modified the parser slightly to allow for verse numbering which should help to make interlinear translations of poetry and the Bible or other religious texts simpler. My changes are found in lines 1304-1321 of [Expexmod/expexmod.tex](expexmod.tex), and the commands found in ... should be added to your `main.tex` file.
