@@ -202,9 +202,9 @@ newpass = Passage()
 
 # run some default behavior, start with defining the first few lines of the default output file
 if newpass.secondverse == None:
-    headline = newpass.book[1] + " " + str(newpass.initialverse[0]) + ":" + str(newpass.initialverse[1] + 1) + "\n"
+    headline = newpass.book[1] + " " + str(newpass.initialverse[0]) + ":" + str(newpass.initialverse[1] + 1)
 else:
-    headline = newpass.book[1] + " " + str(newpass.initialverse[0]) + ":" + str(newpass.initialverse[1] + 1) + "-" + str(newpass.secondverse[0]) + ":" + str(newpass.secondverse[1] + 1) + "\n"
+    headline = newpass.book[1] + " " + str(newpass.initialverse[0]) + ":" + str(newpass.initialverse[1] + 1) + "-" + str(newpass.secondverse[0]) + ":" + str(newpass.secondverse[1] + 1)
 
 wordcount = 0
 if isinstance(newpass.text, str):
