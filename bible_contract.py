@@ -183,9 +183,8 @@ class Passage:
         if isinstance(self.text, str):
             words = self.text.split()
             for word in words:
-                outputfile.write("\\thb{")
                 outputfile.write(word)
-                outputfile.write("}[\\te{}/\\te{}]{}\n")
+                outputfile.write("[\\te{}/\\te{}]{}\n")
             outputfile.close()
         else:
             for line in self.text:
@@ -193,9 +192,9 @@ class Passage:
                 for word in words:
                     # this handles an initial attempt at verse numbering, you will need to review it manually
                     if words.index(word) == 0:
-                        latex = "\\thb{" + word + "}[\\te{}/\\te{}]{y}\n"
+                        latex = word + "[\\te{}/\\te{}]{y}\n"
                     else:
-                        latex = "\\thb{" + word + "}[\\te{}/\\te{}]{}\n"
+                        latex = word + "[\\te{}/\\te{}]{}\n"
                     outputfile.write(latex)
             outputfile.close()
 
