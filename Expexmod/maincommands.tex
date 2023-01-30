@@ -1,0 +1,13 @@
+\usepackage{expexmod}
+
+\newcounter{verseno}
+
+% the marginpar format is currently set with a Hebrew default in mind, the verse numbers will be on the right side of the page
+\newcommand{\verseup}{\stepcounter{verseno}\marginpar[]{\theverseno}}
+\newcommand{\versepp}{\stepcounter{verseno}\marginpar[]{\theverseno-\stepcounter{verseno}\theverseno}}
+\newcommand{\resetverse}{\setcounter{verseno}{1}\marginpar[]{\theverseno}}
+
+% the format for nlevel glosses is now sometext[line/linebelow]{versearg}
+% the available verse arguments are y, y+, and r. y will simply add a verse number on the specified line and increment it by one
+% y+ will add two verse numbers (for the case in which more than one verse is present on a line) in the format verse-nextverse
+% r will reset the verse numbering to 1 and add it to that line
