@@ -1,6 +1,7 @@
 from urllib import request
 import json
 import platform
+import os
 
 # determine platform for file gens later
 plattype = platform.system()
@@ -179,6 +180,8 @@ class Passage:
         if plattype == 'Windows':
             outputfile = open(windowsfilename, "w", encoding="utf-8")
         else:
+            otherbase = os.path.expanduser('~')
+            otherfilename = os.path.join(otherbase, otherfilename)
             outputfile = open(otherfilename, "w", encoding="utf-8")
         if isinstance(self.text, str):
             words = self.text.split()
@@ -222,6 +225,8 @@ if plattype == 'Windows':
     finalname = windowsfilename
     outputfile = open(windowsfilename,"w", encoding="utf-8")
 else:
+    otherbase = os.path.expanduser('~')
+    otherfilename = os.path.join(otherbase, otherfilename)
     finalname = otherfilename
     outputfile = open(otherfilename,"w", encoding="utf-8")
 outputfile.write(headline)
