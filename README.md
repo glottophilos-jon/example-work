@@ -1,5 +1,5 @@
 # Example Work
-This repository contains some examples of my scripting work for potential employers. Not included are my Node.js scripts for testing automation which are property of my employer. To see an example of my skills with HTML, CSS, and JavaScript, you can visit my website at [glottophilos.com](https://glottophilos.com).
+This repository contains some examples of my code work for potential employers. Not included are my Node.js scripts for testing automation which are property of my employer. To see an example of my skills with HTML, CSS, and JavaScript, you can visit my website at [glottophilos.com](https://glottophilos.com).
 
 A description of the scripts contained in this repository are as follows:
 
