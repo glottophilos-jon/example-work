@@ -11,3 +11,6 @@ This script is a simple startup application that alerts the user to the fact tha
 
 ## [Expexmod](Expexmod):
 This folder contains several different LaTeX files which together constitute a modified version of the expex package for linguistics. I have modified the parser slightly to allow for verse numbering which should help to make interlinear translations of poetry and the Bible or other religious texts simpler. My changes are found in lines 1304-1321 of [expexmod.tex](Expexmod/expexmod.tex), and the commands found in [maincommands.tex](Expexmod/maincommands.tex) should be added to your `main.tex` file. Note that the commments in the [maincommands.tex](Expexmod/maincommands.tex) file explain the new nlevel gloss format and the various arguments available.
+
+## [LuwianType](luwiantype):
+This folder contains the LuwianType LaTeX package used for typing in Hieroglyphic Luwian, also available from my website at [glottophilos.com/luwiantype.html](https://glottophilos.com/luwiantype.html). This package is distributed in collaboration with The Oxford Research Centre in the Humanities.
