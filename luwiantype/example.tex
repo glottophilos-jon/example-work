@@ -1,0 +1,175 @@
+%  Copyright 2024 Jonathan Walls
+%  
+%   This work may be distributed and/or modified under the
+%   conditions of the LaTeX Project Public License, either version 1.3
+%   of this license or (at your option) any later version.
+%   The latest version of this license is in
+%     http://www.latex-project.org/lppl.txt
+%   and version 1.3 or later is part of all distributions of LaTeX
+%   version 2005/12/01 or later.
+%  
+%   This work has the LPPL maintenance status “maintained”.
+%   
+%   The Current Maintainer of this work is Jonathan Walls.
+%  
+%   This work consists of the file example.tex
+%   and the derived file LuwianType.sty.
+
+\documentclass[12pt,A4]{article}
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\usepackage[notes,backend=biber]{biblatex-chicago}
+\usepackage{csquotes}
+
+\usepackage{expex}
+\setdefaultlanguage{english}
+\usepackage{lua-ul, luacolor}
+\usepackage{hyperref}
+\setmainfont{Charis SIL}
+\usepackage{LuwianType}
+\usepackage{float}
+
+\title{The LuwianType Package}
+\author{Jonathan Walls}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+
+This package aims to allow platform-agnostic typing in Luwian hieroglyphs using LaTeX. It is based on the Noto Sans Anatolian Hieroglyphic font by Google, and incorporates functionality from the fontspec, stackengine, and graphicx packages in order to create a system for the aforementioned purpose.
+
+\section{Setup}
+The system aims to be maximally user-friendly (to the extent that LaTeX ever is), allowing more-or-less free typing using Latin characters as LaTeX commands which are then converted to hieroglyphic text in the PDF. To begin, in the project folders, one must include:
+\begin{enumerate}
+    \item The Fonts folder containing the necessary fonts
+    \item The LuwianType.sty file containing the commands necessary for the Unicode conversions.
+\end{enumerate}
+
+In the preamble of the main.tex file, one must also include the following line to import the package:\small
+\begin{verbatim}
+\usepackage{LuwianType}
+\end{verbatim}
+\normalsize\newpage
+This will incorporate the fontspec package allowing switching to the Unicode font, bring in the LuwianType functionality from the .sty file, and create a 
+\begin{verbatim}
+    \Luwian
+\end{verbatim} 
+command which will allow easy switching to the cuneiform typing mode. To switch back, simply use the \verb|\Lat| command.
+
+\section{Usage}
+\subsection{Basic Hieroglyphic Typing}
+To use the package, in a given section, you can trigger the cuneiform writing mode by using the \verb|\Luwian| command as listed above. Each character is designated by an uppercase command (to differentiate it from other stock LaTeX commands), and subscripts for sign variants are given in brackets. Typing is made fairly easy by simply turning on caps lock. An example of use is shown below:
+\begin{verbatim}
+    \Luwian\DEUS\KU\AVIS\PA\PA\SA\Lat
+\end{verbatim}
+This displays the hieroglyphic inline text corresponding to: 
+\\
+
+\noindent(DEUS)ku-AVIS-pa-pa-sa
+
+    \noindent\Luwian\DEUS\KU\AVIS\PA\PA\SA\\\Lat
+
+Luwian of course is written in boustrophedon pattern, and the graphicx package has been utilized to create a \verb|\boust{}| command which takes arguments and then mirrors the text for R-to-L reading as shown:
+
+\begin{verbatim}
+    \Luwian\boust{\DEUS\KU\AVIS\PA\PA\SA}\\
+\end{verbatim}
+    \Luwian\boust{\DEUS\KU\AVIS\PA\PA\SA}\\\Lat
+
+\newpage Luwian, however, was written not in strict linear fashion, but included columns as well. This, naturally, is much more easily reproduced in physical media than in text, but the stackengine package allows us to approximate the look and feel of real Luwian text, should this be required. For this purpose, we have the \verb|\gstack{{\argi} {\argii} {\etc}}| command which stacks glyphs in a ``glyph stack," with as many glyphs as needed.
+
+    \begin{verbatim}
+        \Luwian\gstack{{\DEUS} {\KU} {\AVIS}}\gstack{{\PA} {\PA} {\SA}}
+        \HUGE\gstack{{ } {\REX}}
+    \end{verbatim}
+    \Luwian\gstack{{\DEUS} {\KU} {\AVIS}}\gstack{{\PA} {\PA} {\SA}}\HUGE\gstack{{ } {\REX}}\Lat\\
+
+In this example, we can see the two glyph stacks, with each glyph in brackets and separated by a space in the \verb|\gstack| command, shown next to each other, as well as a following stack made up of a single large REX sign and an empty argument. Often, single signs may be written large and take up an entire column, which is best approximated by what is shown above. Here, the font size is changed with \verb|\HUGE|, and a space argument is fed into the glyph stack to help with spacing. This system is very flexible, and able to relatively neatly approximate the look of most Luwian text.\\
+
+To change between S\'A and S\`A, use the following syntax:
+\begin{verbatim}
+    \SA[2]
+    \SA[3]
+    %the base SA character can be had with
+    \SA
+\end{verbatim}
+Thus \Luwian\SA[2], \SA[3], \SA,\setmainfont{Charis SIL}\normalsize in order.
+
+Commands which correspond to numbers, i.e., 1, 2, etc., are in the LaTeX code with 
+\begin{verbatim}
+    \ONE
+    \TWO
+\end{verbatim}
+as LaTeX does not allow numeric characters in command names. Signs with varying vowels like \textit{wa/i} have both vowels in the command name, unseparated, as in \verb|\WAI|. Those signs which are compound, such as LITUUS+na will be designated without any break between the signs as \verb|\LITUUSNA|, except on the rare occasion where a distinction needs to be made between two signs joined by . or +, in which case the latter is designated \verb|PLUS| in the command name. The signs which do not have a standard reading such as \Luwian\LIII\Lat will be designated by an L (Laroche) and the appropriate Laroche number in roman numerals, as in \verb|\LIII|. The special signs for word divisions, logograms, and personal identifiers are \Luwian\VIRIIA \Lat\verb|\VIRIIA|, \Luwian\LOGS \Lat\verb|\LOGS| ("logogram start"), \Luwian\LOGE \Lat\verb|\LOGE| ("logogram end"), and \Luwian\PERS \Lat\verb|\PERS|.
+
+\subsection{Formatting Transcriptions}
+This package also contains a number of commands which are useful for formatting transcriptions of Luwian, which follows conventions that are often tedious to work through. Some of these will create special characters often used in such transcriptions, as in the following table.
+
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{cc}
+        \textbf{Command} & \textbf{Effect} \\ \hline
+        \verb|\badeq| (``bad equal") & \badeq\\
+        \verb|\hl| (``half left") & \hl\\
+        \verb|\hr| (``half right") & \hr\\
+    \end{tabular}
+\end{table}
+
+Some other commands are included which serve to facilitate formatting, as shown in the following table.
+
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{cc}
+        \textbf{Command} & \textbf{Effect} \\ \hline
+        \verb|\tsup{}| & \tsup{M}\\
+        \verb|\tsub{}| & \tsub{2}\\
+    \end{tabular}
+\end{table}
+
+\verb|\tsup| and \verb|\tsub| create super- and subscripts, respectively.
+
+\subsection{Working with expex}
+
+If one is using the expex package for interlinear translation or example glossing, the easiest thing to do is to define a new glw level as shown in this example:
+\color{red}
+\begin{verbatim}
+\defineglwlevels{luw}
+\begingl[glwordalign=center,glhangstyle=none, aboveglftskip=0pt, 
+ everygla=\normalfont, everyglluw=\Luwian]
+\end{verbatim}\color{black}
+\begin{verbatim}
+\gla REX \textsuperscript{I}t\'a-i-t\'a-sa EGO-wa/i-mi 
+(VIR\textsubscript{2})HEROS (VIR\textsubscript{2})pa-l\'a/\'i-s\`a-ti-[n\'i]-za-sa 
+REX a-wa/i x mi-i-*a//
+\end{verbatim}\color{red}
+\begin{verbatim}
+\glluw {\REX} {\PERS\TA[2]\I\TA[2]\SA} {\EGO\WAI\MI} {\VIR[2]\HEROS} 
+{\VIR[2]\PA\LAI[2]\SA[3]\TI\NI[2]\ZA\SA} {\REX} {\A\WAI} x {\MI\I\A}//
+\end{verbatim}\color{black}
+\begin{verbatim}
+\glb hantawattis Taitas amu\badeq wa\badeq mi hastalis Falistinizzas 
+hantawattis a\badeq wa x ammi//
+\glc king.nom Taitas I.quot.myself Hero Falistina.nom king.nom and.quot x 
+my.dat//
+\glft I am King Taitas, Hero, Falistinian king, and I\newline//
+\endgl
+\end{verbatim}
+
+Note the section at the beginning which defines a ``luw" (Luwian) glw level, which needs to be done only once at the beginning of the document, and note also the \verb|evergylluw=\Luwian| specification in the parameters which assigns the entire line to be in Luwian hieroglyphs. You may of course omit one of the transcription levels, in which case you can simply add the specification to the a, b, or c level instead. This code will produce the following output:\\
+
+\defineglwlevels{luw}
+
+\begingl[glwordalign=center,glhangstyle=none, aboveglftskip=0pt, everygla=\normalfont, everyglluw=\Luwian]
+\gla REX \textsuperscript{I}t\'a-i-t\'a-sa EGO-wa/i-mi (VIR\textsubscript{2})HEROS (VIR\textsubscript{2})pa-l\'a/\'i-s\`a-ti-[n\'i]-za-sa REX a-wa/i x mi-i-*a//
+\glluw {\REX} {\PERS\TA[2]\I\TA[2]\SA} {\EGO\WAI\MI} {\VIR[2]\HEROS} {\VIR[2]\PA\LAI[2]\SA[3]\TI\NI[2]\ZA\SA} {\REX} {\A\WAI} x {\MI\I\A}//
+\glb hantawattis Taitas amu\badeq wa\badeq mi hastalis Falistinizzas hantawattis a\badeq wa x ammi//
+\glc king.nom Taitas I.quot.myself Hero Falistina.nom king.nom and.quot x my.dat//
+\glft I am King Taitas, Hero, Falistinian king, and I\newline//
+\endgl
+
+Happy Luwian!
+\end{document}
+
