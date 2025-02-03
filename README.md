@@ -14,3 +14,6 @@ This folder contains several different LaTeX files which together constitute a m
 
 ## [LuwianType](luwiantype):
 This folder contains the LuwianType LaTeX package used for typing in Hieroglyphic Luwian, also available from my website at [glottophilos.com/luwiantype.html](https://glottophilos.com/luwiantype.html) or the CTAN repository at [ctan.org/pkg/luwiantype](https://ctan.org/pkg/luwiantype). This package is distributed in collaboration with The Oxford Research Centre in the Humanities and with the CTAN LaTeX repository.
+
+## [HitType](hittype):
+This folder contains the HitType LaTeX package used for typing in Hittite Cuneiform, also available soon from my website at [glottophilos.com/hittype.html](https://glottophilos.com/hittype.html) or soon from the CTAN repository at [ctan.org/pkg/hittype](https://ctan.org/pkg/hittype). This package is distributed in collaboration with the CTAN LaTeX repository and with the written permission of Dr Sylvie Vanséveren, the creator of the included Ullikummi fonts, which are also available at [Hethitologie Portal Mainz](https://www.hethport.uni-wuerzburg.de/cuneifont/).
