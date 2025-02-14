@@ -1,6 +1,6 @@
-HitType Package v1.0
+HitType Package v1.1
 ==================
-2025/02/03
+2025/02/14
 
 Maintainer: Jonathan Walls
 
@@ -38,5 +38,6 @@ The user agrees to mention the following credits:
 Fonts created by Sylvie Vanséveren, available on the Hethitologie Portal Mainz 
 
 Version history:
-1 - Original Release Version
+1.1 - changed command definition structure to fix spacing issues and updated documentation
+1.0 - Original Release Version
 
