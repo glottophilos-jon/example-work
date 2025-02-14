@@ -38,6 +38,8 @@ The user agrees to mention the following credits:
 Fonts created by Sylvie Vanséveren, available on the Hethitologie Portal Mainz 
 
 Version history:
+
 1.1 - changed command definition structure to fix spacing issues and updated documentation
+
 1.0 - Original Release Version
 
