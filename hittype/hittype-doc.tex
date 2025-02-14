@@ -17,6 +17,7 @@
 % 
 %
 % Version history:
+% 1.1 - changed command definition structure to fix spacing issues and updated documentation
 % 1.0 - Original Release Version
 
 \documentclass[12pt,A4]{article}
@@ -40,7 +41,6 @@
 \maketitle
 
 \section{Introduction}
-
 This package aims to allow platform-agnostic typing in Hittite cuneiform using LaTeX. It is based on the work done by the Hethitologie Portal Mainz at \href{https://www.hethport.uni-wuerzburg.de/cuneifont/}{www.hethport.uni-wuerzburg.de}, using (with written permission) the Ullikummi fonts developed by Prof. Sylvie Vanséveren for Hittite cuneiform. This package was developed for use with LuaLaTeX, functionality with other compilers is not guaranteed.
 
 \section{Setup}
@@ -59,7 +59,7 @@ This will incorporate the fontspec package allowing switching to the Unicode fon
 \begin{verbatim}
     \Hitt
 \end{verbatim} 
-command which will allow easy switching to the cuneiform typing mode.
+command which will allow easy switching to the cuneiform typing mode. Returning to Latin script can be done with \verb|\Lat|.
 
 \section{Usage}
 \subsection{Basic Cuneiform Typing}
@@ -69,7 +69,7 @@ To use the package, in a given section, you can trigger the cuneiform writing mo
     \LUGAL\GAL \LUGAL \KUR \HittB\HA\Hitt\AD\TI 
     \UR\HittB\SAG
 
-    \setmainfont{Charis SIL}\normalsize
+    \Lat
 \end{verbatim}
 This displays the cuneiform text corresponding to: 
 \\
@@ -78,7 +78,7 @@ This displays the cuneiform text corresponding to:
 
     \Hitt\UM\MA \AN\UD\CI \DIC\HAR\CI\HittB\LI\Hitt \LUGAL\GAL \LUGAL \KUR \HittB\HA\Hitt\AD\TI \UR\HittB\SAG\\
 
-\setmainfont{Charis SIL}\normalsize
+\Lat
 
 Note that you can use the commands
 \begin{verbatim}
@@ -93,17 +93,17 @@ as shown above to switch to different scribal variants of certain signs or to cr
     \GIR
 \end{verbatim}
 
-\Hitt\GIR\GIR[2]\GIR[3]\Lat
+\Hitt\GIR\ \GIR[2]\ \GIR[3]\Lat
 
-All commands follow the listing as found in the HittiteSignList PDF included in the package Documentation folder. Note that <C> is used in place of <\v{S}> for ease of typing (likewise <H> for <\funH>, and that Autotext commands as shown in the document which correspond to numbers, i.e., 1, 2, etc., are replaced in the LaTeX code with 
-\begin{verbatim}
-    \ONE
-    \TWO
-\end{verbatim}
-as LaTeX does not allow numeric characters in command names. Also note that any compound signs which require specifications such as <ekisim5xamac> in the PDF use roman numerals and a lowercase <x> in the LaTeX command, e.g. 
-\begin{verbatim}
-    \EKISIMvxAMAC
-\end{verbatim}
+All commands follow the listing as found in the HittiteSignList PDF included in the package Documentation folder. Note that <C> is used in place of <\v{S}> for ease of typing (likewise <H> for <\funH>, and that Autotext commands as shown in the document which correspond to numbers, i.e., 1, 2, etc., are replaced in the LaTeX code with \\
+
+\verb|\ONE|\ \ \Hitt\ONE\Lat\\
+
+\verb|\TWO|\ \ \Hitt\TWO\Lat\\
+
+as LaTeX does not allow numeric characters in command names. Also note that any compound signs which require specifications such as <ekisim5xamac> in the PDF use roman numerals and a lowercase <x> in the LaTeX command, e.g.\\
+
+\verb|\EKISIMvxAMAC|\ \ \Hitt\EKISIMvxAMAC\Lat
 
 \subsection{Formatting Hittite Transcriptions}
 This package also contains a number of commands which are useful for formatting transcriptions of Hittite, which follows conventions that are often tedious to work through. Some of these will create special characters often used in such transcriptions, as in the following table.
