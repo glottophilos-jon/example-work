@@ -17,12 +17,13 @@
 % 
 %
 % Version history:
+% 1.4 - updated command definitions to fix spacing issues
 % 1.3 - modified character for half brackets
 % 1.2 - updated to resolve some minor typos and command formatting
 % 1.1 - updated to comply with CTAN formatting requirements, adjustments to licensing
    
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{luwiantype}[2025/02/01 Luwian Hieroglyph Typing Package]
+\ProvidesPackage{luwiantype}[2025/02/15 Luwian Hieroglyph Typing Package]
 
 %Required packages and declarations
 \usepackage{fontspec}
@@ -46,21 +47,25 @@
 
 
 %Main sign commands
-\newcommand{\EGO}[1][]{
-    \ifx\relax#1\relax
-        {\char"14400}
-    \else \ifnum #1=2
-        {\char"14401}
-    \fi\fi
+\def\EGO{%
+    \@ifnextchar[{\EGO@}{\EGO@[]}%
 }
+\def\EGO@[#1]{%
+    \ifx\relax#1\relax
+        \char"14400%
+    \else \ifnum #1=2
+        \char"14401%
+    \fi\fi}
 \newcommand{\LIII}{\char"14402}
-\newcommand{\MONS}[1][]{
-    \ifx\relax#1\relax
-        {\char"144EC}
-    \else \ifnum #1=2
-        {\char"14403}
-    \fi\fi
+\def\MONS{%
+    \@ifnextchar[{\MONS@}{\MONS@[]}%
 }
+\def\MONS@[#1]{%
+    \ifx\relax#1\relax
+        \char"144EC%
+    \else \ifnum #1=2
+        \char"14403%
+    \fi\fi}
 \newcommand{\LV}{\char"14404}
 \newcommand{\ADORARE}{\char"14405}
 \newcommand{\EDERE}{\char"14406}
@@ -77,13 +82,15 @@
 \newcommand{\MAGNUSDOMINA}{\char"14410}
 \newcommand{\REX}{\char"14411}
 \newcommand{\MAGNUSREX}{\char"14412}
-\newcommand{\A}[1][]{
-    \ifx\relax#1\relax
-        {\char"145F7}
-    \else \ifnum #1=2
-        {\char"14413}
-    \fi\fi
+\def\A{%
+    \@ifnextchar[{\A@}{\A@[]}%
 }
+\def\A@[#1]{%
+    \ifx\relax#1\relax
+        \char"145F7%
+    \else \ifnum #1=2
+        \char"14413%
+    \fi\fi}
 \newcommand{\LXX}{\char"14414}
 \newcommand{\HEROS}{\char"14415}
 \newcommand{\LOQUI}{\char"14416}
@@ -94,43 +101,49 @@
 \newcommand{\VERSUS}{\char"1441B}
 \newcommand{\LIBARE}{\char"1441C}
 \newcommand{\FORTIS}{\char"1441D}
-\newcommand{\TA}[1][]{
-    \ifx\relax#1\relax
-        {\char"14470}
-    \else \ifnum #1=2
-        {\char"1441E}
-    \else \ifnum #1=3
-        {\char"1442C}
-    \else \ifnum #1=6
-        {\char"1445B}
-    \fi\fi\fi\fi
+\def\TA{%
+    \@ifnextchar[{\TA@}{\TA@[]}%
 }
+\def\TA@[#1]{%
+    \ifx\relax#1\relax
+        \char"14470%
+    \else \ifnum #1=2
+        \char"1441E%
+    \else \ifnum #1=3
+        \char"1442C%
+    \else \ifnum #1=6
+        \char"1445B%
+    \fi\fi\fi\fi}
 \newcommand{\LXXX}{\char"1441F}
 \newcommand{\LIGARE}{\char"14420}
 \newcommand{\PUGNUSPUGNUS}{\char"14420}
 \newcommand{\BRACCHIUM}{\char"14421}
 \newcommand{\LXXXIII}{\char"14422}
 \newcommand{\POST}{\char"14423}
-\newcommand{\NA}[1][]{
-    \ifx\relax#1\relax
-        {\char"14424}
-    \else \ifnum #1=2
-        {\char"1445D}
-    \fi\fi
+\def\NA{%
+    \@ifnextchar[{\NA@}{\NA@[]}%
 }
+\def\NA@[#1]{%
+    \ifx\relax#1\relax
+        \char"14424%
+    \else \ifnum #1=2
+        \char"1445D%
+    \fi\fi}
 \newcommand{\LITUUSNA}{\char"14425}
 \newcommand{\LXXXVII}{\char"14426}
 \newcommand{\LXXXVIII}{\char"14427}
 \newcommand{\PUGNUS}{\char"14428}
 \newcommand{\PUGNUSX}{\char"14429}
 \newcommand{\LXL}{\char"1442A}
-\newcommand{\CAPERE}[1][]{
-    \ifx\relax#1\relax
-        {\char"1442B}
-    \else \ifnum #1=2
-        {\char"1442E}
-    \fi\fi
+\def\CAPERE{%
+    \@ifnextchar[{\CAPERE@}{\CAPERE@[]}%
 }
+\def\CAPERE@[#1]{%
+    \ifx\relax#1\relax
+        \char"1442B%
+    \else \ifnum #1=2
+        \char"1442E%
+    \fi\fi}
 \newcommand{\CAPEREIICAPEREII}{\char"1442D}
 \newcommand{\LXLIV}{\char"1442F}
 \newcommand{\INFANS}{\char"14430}
@@ -148,22 +161,26 @@
 \newcommand{\MANUSCULTER}{\char"1443A}
 \newcommand{\ENSIS}{\char"1443B}
 \newcommand{\LLIV}{\char"1443C}
-\newcommand{\NI}[1][]{
+\def\NI{%
+    \@ifnextchar[{\NI@}{\NI@[]}%
+}
+\def\NI@[#1]{%
     \ifx\relax#1\relax
-        {\char"145D0}
+        \char"145D0%
     \else \ifnum #1=2
-        {\char"144F5}
+        \char"144F5%
     \else \ifnum #1=3
-        {\char"1443D}
-    \fi\fi\fi
+        \char"1443D%
+    \fi\fi\fi}
+\def\KA{%
+    \@ifnextchar[{\KA@}{\KA@[]}%
 }
-\newcommand{\KA}[1][]{
+\def\KA@[#1]{%
     \ifx\relax#1\relax
-        {\char"145E7}
+        \char"145E7%
     \else \ifnum #1=2
-        {\char"1443E}
-    \fi\fi
-}
+        \char"1443E%
+    \fi\fi}
 \newcommand{\INFRA}{\char"1443F}
 \newcommand{\SUB}{\char"1443F}
 \newcommand{\CUM}{\char"14440}
@@ -175,18 +192,23 @@
 \newcommand{\LLXIV}{\char"14446}
 \newcommand{\PONERE}{\char"14447}
 \newcommand{\DARE}{\char"14448}
-\newcommand{\PI}[1][]{
-    \ifx\relax#1\relax
-        {\char"14449}
-    \fi
+% I assume my past self had a reason for defining this this way, but it doesn't really matter for functionality
+\def\PI{%
+    \@ifnextchar[{\PI@}{\PI@[]}%
 }
-\newcommand{\MANDARE}[1][]{
+\def\PI@[#1]{%
     \ifx\relax#1\relax
-        {\char"1444A}
+        \char"14449%
+    \fi}
+\def\MANDARE{%
+    \@ifnextchar[{\MANDARE@}{\MANDARE@[]}%
+}
+\def\MANDARE@[#1]{%
+    \ifx\relax#1\relax
+        \char"1444A%
     \else \ifnum #1=2
-        {\char"1444B}
-    \fi\fi
-}
+        \char"1444B%
+    \fi\fi}
 \newcommand{\DAREDARE}{\char"1444A}
 \newcommand{\LLXVII}{\char"1444C}
 \newcommand{\LLXVIII}{\char"1444D}
@@ -203,131 +225,157 @@
 \newcommand{\ALA}{\char"14457}
 \newcommand{\FEMINA}{\char"14458}
 \newcommand{\MATER}{\char"14458}
-\newcommand{\SARMA}[1][]{
-    \ifx\relax#1\relax
-        {\char"14459}
-    \else \ifnum #1=2
-        {\char"1445A}
-    \fi\fi
+\def\SARMA{%
+    \@ifnextchar[{\SARMA@}{\SARMA@[]}%
 }
-\newcommand{\CRUS}[1][]{
+\def\SARMA@[#1]{%
     \ifx\relax#1\relax
-        {\char"1445B}
+        \char"14459%
     \else \ifnum #1=2
-        {\char"1445D}
-    \fi\fi
+        \char"1445A%
+    \fi\fi}
+\def\CRUS{%
+    \@ifnextchar[{\CRUS@}{\CRUS@[]}%
 }
+\def\CRUS@[#1]{%
+    \ifx\relax#1\relax
+        \char"1445B%
+    \else \ifnum #1=2
+        \char"1445D%
+    \fi\fi}
 \newcommand{\CRUSFLUMEN}{\char"1445C}
 \newcommand{\GENUFLECTERE}{\char"1445E}
 \newcommand{\CRUSCRUS}{\char"1445F}
 \newcommand{\LLXXXVII}{\char"14460}
 \newcommand{\LLXXXVIII}{\char"14461}
-\newcommand{\TU}[1][]{
+\def\TU{%
+    \@ifnextchar[{\TU@}{\TU@[]}%
+}
+\def\TU@[#1]{%
     \ifx\relax#1\relax
-        {\char"14462}
+        \char"14462%
     \else \ifnum #1=2
-        {\char"1456C}
+        \char"1456C%
     \else \ifnum #1=3
-        {\char"1456D}
+        \char"1456D%
     \else \ifnum #1=4
-        {\char"14506}
-    \fi\fi\fi\fi
+        \char"14506%
+    \fi\fi\fi\fi}
+\def\PES{%
+    \@ifnextchar[{\PES@}{\PES@[]}%
 }
-\newcommand{\PES}[1][]{
+\def\PES@[#1]{%
     \ifx\relax#1\relax
-        {\char"14463}
+        \char"14463%
     \else \ifnum #1=2
-        {\char"14466}
-    \fi\fi
+        \char"14466%
+    \fi\fi}
+\def\TI{%
+    \@ifnextchar[{\TI@}{\TI@[]}%
 }
-\newcommand{\TI}[1][]{
+\def\TI@[#1]{%
     \ifx\relax#1\relax
-        {\char"14463}
+        \char"14463%
     \else \ifnum #1=2
-        {\char"1461F}
+        \char"1461F%
     \else \ifnum #1=3
-        {\char"14644}
-    \fi\fi\fi
-}
+        \char"14644%
+    \fi\fi\fi}
 \newcommand{\PESSCALAROTAE}{\char"14464}
 \newcommand{\LXCII}{\char"14465}
 \newcommand{\LXCIV}{\char"14467}
 \newcommand{\PESIIPESII}{\char"14468}
 \newcommand{\PESIIPES}{\char"14469}
-\newcommand{\LEO}[1][]{
-    \ifx\relax#1\relax
-        {\char"1446A}
-    \else \ifnum #1=2
-        {\char"1446B}
-    \fi\fi
+\def\LEO{%
+    \@ifnextchar[{\LEO@}{\LEO@[]}%
 }
+\def\LEO@[#1]{%
+    \ifx\relax#1\relax
+        \char"1446A%
+    \else \ifnum #1=2
+        \char"1446B%
+    \fi\fi}
 \newcommand{\BESTIA}{\char"1446A}
-\newcommand{\CANIS}[1][]{
-    \ifx\relax#1\relax
-        {\char"1446C}
-    \else \ifnum #1=2
-        {\char"1446D}
-    \fi\fi
+\def\CANIS{%
+    \@ifnextchar[{\CANIS@}{\CANIS@[]}%
 }
+\def\CANIS@[#1]{%
+    \ifx\relax#1\relax
+        \char"1446C%
+    \else \ifnum #1=2
+        \char"1446D%
+    \fi\fi}
 \newcommand{\EQUUS}{\char"1446E}
-\newcommand{\ASINUS}[1][]{
-    \ifx\relax#1\relax
-        {\char"1446F}
-    \else \ifnum #1=2
-        {\char"14471}
-    \fi\fi
+\def\ASINUS{%
+    \@ifnextchar[{\ASINUS@}{\ASINUS@[]}%
 }
+\def\ASINUS@[#1]{%
+    \ifx\relax#1\relax
+        \char"1446F%
+    \else \ifnum #1=2
+        \char"14471%
+    \fi\fi}
 \newcommand{\ASINUSIIA}{\char"14472}
-\newcommand{\CERVUS}[1][]{
+\def\CERVUS{%
+    \@ifnextchar[{\CERVUS@}{\CERVUS@[]}%
+}
+\def\CERVUS@[#1]{%
     \ifx\relax#1\relax
-        {\char"14473}
+        \char"14473%
     \else \ifnum #1=2
-        {\char"14474}
+        \char"14474%
     \else \ifnum #1=3
-        {\char"14475}
-    \fi\fi\fi
+        \char"14475%
+    \fi\fi\fi}
+\def\RU{%
+    \@ifnextchar[{\RU@}{\RU@[]}%
 }
-\newcommand{\RU}[1][]{
+\def\RU@[#1]{%
     \ifx\relax#1\relax
-        {\char"145D1}
+        \char"145D1%
     \else \ifnum #1=2
-        {\char"14473}
-    \fi\fi
+        \char"14473%
+    \fi\fi}
+\def\CAPRA{%
+    \@ifnextchar[{\CAPRA@}{\CAPRA@[]}%
 }
-\newcommand{\CAPRA}[1][]{
+\def\CAPRA@[#1]{%
     \ifx\relax#1\relax
-        {\char"14476}
+        \char"14476%
     \else \ifnum #1=2
-        {\char"14478}
-    \fi\fi
+        \char"14478%
+    \fi\fi}
+\def\SA{%
+    \@ifnextchar[{\SA@}{\SA@[]}%
 }
-\newcommand{\SA}[1][]{
+\def\SA@[#1]{%
     \ifx\relax#1\relax
-        {\char"145D4}
+        \char"145D4%
     \else \ifnum #1=2
-        {\char"145E6}
+        \char"145E6%
     \else \ifnum #1=3
-        {\char"14477}
+        \char"14477%
     \else \ifnum #1=4
-        {\char"145C6}
+        \char"145C6%
     \else \ifnum #1=5
-        {\char"1456E}
+        \char"1456E%
     \else \ifnum #1=6
-        {\char"14500}
+        \char"14500%
     \else \ifnum #1=7
-        {\char"14563}
+        \char"14563%
     \else \ifnum #1=8
-        {\char"145AD}
-    \fi\fi\fi\fi\fi\fi\fi\fi
-}
+        \char"145AD%
+    \fi\fi\fi\fi\fi\fi\fi\fi}
 \newcommand{\CAPRAIIA}{\char"14479}
-\newcommand{\BOS}[1][]{
-    \ifx\relax#1\relax
-        {\char"1447A}
-    \else \ifnum #1=2
-        {\char"1447C}
-    \fi\fi
+\def\BOS{%
+    \@ifnextchar[{\BOS@}{\BOS@[]}%
 }
+\def\BOS@[#1]{%
+    \ifx\relax#1\relax
+        \char"1447A%
+    \else \ifnum #1=2
+        \char"1447C%
+    \fi\fi}
 \newcommand{\U}{\char"1447B}
 \newcommand{\LCVI}{\char"1447D}
 \newcommand{\BOSMI}{\char"1447E}
@@ -335,55 +383,65 @@
 \newcommand{\MUWA}{\char"14480}
 \newcommand{\BOSIIMI}{\char"14481}
 \newcommand{\CORNU}{\char"14482}
-\newcommand{\SU}[1][]{
-    \ifx\relax#1\relax
-        {\char"145A2}
-    \else \ifnum #1=2
-        {\char"14482}
-    \else \ifnum #1=3
-        {\char"145F5}
-    \fi\fi\fi
+\def\SU{%
+    \@ifnextchar[{\SU@}{\SU@[]}%
 }
+\def\SU@[#1]{%
+    \ifx\relax#1\relax
+        \char"145A2%
+    \else \ifnum #1=2
+        \char"14482%
+    \else \ifnum #1=3
+        \char"145F5%
+    \fi\fi\fi}
 \newcommand{\VITELLUS}{\char"14483}
-\newcommand{\OVIS}[1][]{
-    \ifx\relax#1\relax   
-        {\char"14484}
-    \else \ifnum #1=2
-        {\char"14486}
-    \else \ifnum #1=3
-        {\char"14487}
-    \fi\fi\fi
+\def\OVIS{%
+    \@ifnextchar[{\OVIS@}{\OVIS@[]}%
 }
-\newcommand{\MA}[1][]{
+\def\OVIS@[#1]{%
     \ifx\relax#1\relax
-        {\char"14485}
+        \char"14484%
     \else \ifnum #1=2
-        {\char"14598}
+        \char"14486%
     \else \ifnum #1=3
-        {\char"14556}
-    \fi\fi\fi
+        \char"14487%
+    \fi\fi\fi}
+\def\MA{%
+    \@ifnextchar[{\MA@}{\MA@[]}%
 }
+\def\MA@[#1]{%
+    \ifx\relax#1\relax
+        \char"14485%
+    \else \ifnum #1=2
+        \char"14598%
+    \else \ifnum #1=3
+        \char"14556%
+    \fi\fi\fi}
 \newcommand{\LINGERE}{\char"14488}
-\newcommand{\ZA}[1][]{
-    \ifx\relax#1\relax
-        {\char"145AA}
-    \else \ifnum #1=2
-        {\char"14579}
-    \else \ifnum #1=3
-        {\char"1457C}
-    \else \ifnum #1=4
-        {\char"14488}
-    \fi\fi\fi\fi
+\def\ZA{%
+    \@ifnextchar[{\ZA@}{\ZA@[]}%
 }
+\def\ZA@[#1]{%
+    \ifx\relax#1\relax
+        \char"145AA%
+    \else \ifnum #1=2
+        \char"14579%
+    \else \ifnum #1=3
+        \char"1457C%
+    \else \ifnum #1=4
+        \char"14488%
+    \fi\fi\fi\fi}
 \newcommand{\LCXIII}{\char"14489}
 \newcommand{\LITUUSU}{\char"1448A}
-\newcommand{\LEPUS}[1][]{
-    \ifx\relax#1\relax
-        {\char"1448B}
-    \else \ifnum #1=2
-        {\char"1448C}
-    \fi\fi
+\def\LEPUS{%
+    \@ifnextchar[{\LEPUS@}{\LEPUS@[]}%
 }
+\def\LEPUS@[#1]{%
+    \ifx\relax#1\relax
+        \char"1448B%
+    \else \ifnum #1=2
+        \char"1448C%
+    \fi\fi}
 \newcommand{\TAPA}{\char"1448C}
 \newcommand{\LCXVI}{\char"1448D}
 \newcommand{\LCXVII}{\char"1448E}
@@ -394,42 +452,48 @@
 \newcommand{\LCXXII}{\char"14493}
 \newcommand{\LCXXIII}{\char"14494}
 \newcommand{\LCXXIV}{\char"14495}
-\newcommand{\LI}[1][]{
-    \ifx\relax#1\relax
-        {\char"14539}
-    \else \ifnum #1=2
-        {\char"14496}
-    \else \ifnum #1=3
-        {\char"14547}
-    \fi\fi\fi
+\def\LI{%
+    \@ifnextchar[{\LI@}{\LI@[]}%
 }
+\def\LI@[#1]{%
+    \ifx\relax#1\relax
+        \char"14539%
+    \else \ifnum #1=2
+        \char"14496%
+    \else \ifnum #1=3
+        \char"14547%
+    \fi\fi\fi}
 \newcommand{\UNGULA}{\char"14497}
 \newcommand{\LCXXVI}{\char"14498}
 \newcommand{\LCXXVII}{\char"14499}
-\newcommand{\AVIS}[1][]{
+\def\AVIS{%
+    \@ifnextchar[{\AVIS@}{\AVIS@[]}%
+}
+\def\AVIS@[#1]{%
     \ifx\relax#1\relax
-        {\char"1449A}
+        \char"1449A%
     \else \ifnum #1=2
-        {\char"1449E}
+        \char"1449E%
     \else \ifnum #1=3
-        {\char"1449C}
+        \char"1449C%
     \else \ifnum #1=4
-        {\char"1449F}
+        \char"1449F%
     \else \ifnum #1=5
-        {\char"1449D}
-    \fi\fi\fi\fi\fi
+        \char"1449D
+    \fi\fi\fi\fi\fi}
+\def\ZI{%
+    \@ifnextchar[{\ZI@}{\ZI@[]}%
 }
-\newcommand{\ZI}[1][]{
+\def\ZI@[#1]{%
     \ifx\relax#1\relax
-        {\char"145A9}
+        \char"145A9%
     \else \ifnum #1=2
-        {\char"14560}
+        \char"14560%
     \else \ifnum #1=3
-        {\char"1457B}
+        \char"1457B%
     \else \ifnum #1=4
-        {\char"1449A}
-    \fi\fi\fi\fi
-}
+        \char"1449A%
+    \fi\fi\fi\fi}
 \newcommand{\LCXXIX}{\char"1449B}
 \newcommand{\AQUILA}{\char"1449F}
 \newcommand{\ARAI}{\char"144A0}
@@ -452,13 +516,15 @@
 \newcommand{\LCL}{\char"144B1}
 \newcommand{\TELIPINU}{\char"144B2}
 \newcommand{\LCLII}{\char"144B3}
-\newcommand{\NU}[1][]{
-    \ifx\relax#1\relax
-        {\char"144B4}
-    \else \ifnum #1=2
-        {\char"145BF}
-    \fi\fi
+\def\NU{%
+    \@ifnextchar[{\NU@}{\NU@[]}%
 }
+\def\NU@[#1]{%
+    \ifx\relax#1\relax
+        \char"144B4%
+    \else \ifnum #1=2
+        \char"144BF%
+    \fi\fi}
 \newcommand{\LCLIV}{\char"144B5}
 \newcommand{\LCLV}{\char"144B6}
 \newcommand{\LCLVI}{\char"144B7}
@@ -471,61 +537,71 @@
 \newcommand{\LCLXII}{\char"144BD}
 \newcommand{\LCLXIII}{\char"144BE}
 \newcommand{\LCLXIV}{\char"144BF}
-\newcommand{\BONUS}[1][]{
-    \ifx\relax#1\relax
-        {\char"144C0}
-    \else \ifnum #1=2
-        {\char"145A2}
-    \fi\fi
+\def\BONUS{%
+    \@ifnextchar[{\BONUS@}{\BONUS@[]}%
 }
-\newcommand{\WAI}[1][]{
+\def\BONUS@[#1]{%
     \ifx\relax#1\relax
-        {\char"145EC}
+        \char"144C0%
     \else \ifnum #1=2
-        {\char"144C1}
+        \char"145A2%
+    \fi\fi}
+\def\WAI{%
+    \@ifnextchar[{\WAI@}{\WAI@[]}%
+}
+\def\WAI@[#1]{%
+    \ifx\relax#1\relax
+        \char"145EC%
+    \else \ifnum #1=2
+        \char"144C1%
     \else \ifnum #1=3
-        {\char"144C0}
+        \char"144C0%
     \else \ifnum #1=4
-        {\char"144EC}
+        \char"144EC%
     \else \ifnum #1=5
-        {\char"144E9}
+        \char"144E9%
     \else \ifnum #1=6
-        {\char"144E4}
+        \char"144E4%
     \else \ifnum #1=7
-        {\char"14541}
+        \char"14541%
     \else \ifnum #1=9
-        {\char"1453B}
-    \fi\fi\fi\fi\fi\fi\fi\fi
-}
+        \char"1453B%
+    \fi\fi\fi\fi\fi\fi\fi\fi}
 \newcommand{\LCLXVII}{\char"144C2}
 \newcommand{\LCLXVIII}{\char"144C3}
 \newcommand{\LCLXIX}{\char"144C4}
 \newcommand{\LCLXX}{\char"144C5}
 \newcommand{\LCLXXI}{\char"144C6}
-\newcommand{\TAI}[1][]{
+\def\TAI{%
+    \@ifnextchar[{\TAI@}{\TAI@[]}%
+}
+\def\TAI@[#1]{%
     \ifx\relax#1\relax
-        {\char"}
+        \char"14566%
     \else \ifnum #1=4
-        {\char"14566}
+        \char"14566%
     \else \ifnum #1=5
-        {\char"144C7}
-    \fi\fi\fi
+        \char"144C7%
+    \fi\fi\fi}
+\def\LAI{%
+    \@ifnextchar[{\LAI@}{\LAI@[]}%
 }
-\newcommand{\LAI}[1][]{
+\def\LAI@[#1]{%
     \ifx\relax#1\relax
-        {\char"14566}
+        \char"14566%
     \else \ifnum #1=2
-        {\char"144C7}
-    \fi\fi
-}
+        \char"144C7%
+    \fi\fi}
 \newcommand{\HASTARIUS}{\char"144C8}
-\newcommand{\SI}[1][]{
-    \ifx\relax#1\relax
-        {\char"144C9}
-    \else \ifnum #1=2
-        {\char"145FE}
-    \fi\fi
+\def\SI{%
+    \@ifnextchar[{\SI@}{\SI@[]}%
 }
+\def\SI@[#1]{%
+    \ifx\relax#1\relax
+        \char"144C9%
+    \else \ifnum #1=2
+        \char"145FE%
+    \fi\fi}
 \newcommand{\LINGUA}{\char"144CA}
 \newcommand{\LA}{\char"144CA}
 \newcommand{\LALA}{\char"144CB}
@@ -544,25 +620,29 @@
 \newcommand{\LCLXXXVII}{\char"144D6}
 \newcommand{\LCLXXXVIII}{\char"144D7}
 \newcommand{\LCLXXXIX}{\char"144D8}
-\newcommand{\SOL}[1][]{
-    \ifx\relax#1\relax
-        {\char"144DA}
-    \else \ifnum #1=2
-        {\char"144D9}
-    \fi\fi
+\def\SOL{%
+    \@ifnextchar[{\SOL@}{\SOL@[]}%
 }
+\def\SOL@[#1]{%
+    \ifx\relax#1\relax
+        \char"144DA%
+    \else \ifnum #1=2
+        \char"144D9%
+    \fi\fi}
 \newcommand{\ORIENS}{\char"144DB}
 \newcommand{\LUNA}{\char"144DC}
 \newcommand{\LCXCIV}{\char"144DD}
 \newcommand{\LCXCV}{\char"144DE}
 \newcommand{\HATTI}{\char"144DF}
-\newcommand{\HA}[1][]{
-    \ifx\relax#1\relax
-        {\char"144F7}
-    \else \ifnum #1=2
-        {\char"144DF}
-    \fi\fi
+\def\HA{%
+    \@ifnextchar[{\HA@}{\HA@[]}%
 }
+\def\HA@[#1]{%
+    \ifx\relax#1\relax
+        \char"144F7%
+    \else \ifnum #1=2
+        \char"144DF%
+    \fi\fi}
 \newcommand{\HATTILI}{\char"144E0}
 \newcommand{\HATTUSILI}{\char"144E0}
 \newcommand{\HAIILI}{\char"144E0}
@@ -579,24 +659,28 @@
 \newcommand{\LCCVI}{\char"144EB}
 \newcommand{\LEOMONSTULEO}{\char"144ED}
 \newcommand{\LCCVIII}{\char"144EE}
-\newcommand{\I}[1][]{
-    \ifx\relax#1\relax
-        {\char"144EF}
-    \else \ifnum #1=2
-        {\char"14550}
-    \fi\fi
+\def\I{%
+    \@ifnextchar[{\I@}{\I@[]}%
 }
+\def\I@[#1]{%
+    \ifx\relax#1\relax
+        \char"144EF%
+    \else \ifnum #1=2
+        \char"14550%
+    \fi\fi}
 \newcommand{\IRAI}{\char"144F0}
 \newcommand{\RII}{\char"144F0}
-\newcommand{\IA}[1][]{
-    \ifx\relax#1\relax
-        {\char"144F1}
-    \else \ifnum #1=2
-        {\char"14551}
-    \else \ifnum #1=3
-        {\char"145AC}
-    \fi\fi\fi
+\def\IA{%
+    \@ifnextchar[{\IA@}{\IA@[]}%
 }
+\def\IA@[#1]{%
+    \ifx\relax#1\relax
+        \char"144F1%
+    \else \ifnum #1=2
+        \char"14551%
+    \else \ifnum #1=3
+        \char"145AC%
+    \fi\fi\fi}
 \newcommand{\LCCXI}{\char"144F2}
 \newcommand{\FLUMEN}{\char"144F3}
 \newcommand{\LCCXIII}{\char"144F4}
@@ -627,13 +711,15 @@
 \newcommand{\LCCXXXV}{\char"1450D}
 \newcommand{\MURUS}{\char"1450E}
 \newcommand{\LCCXXXVI}{\char"1450E}
-\newcommand{\PORTA}[1][]{
-    \ifx\relax#1\relax
-        {\char"1450F}
-    \else \ifnum #1=2
-        {\char"14511}
-    \fi\fi
+\def\PORTA{%
+    \@ifnextchar[{\PORTA@}{\PORTA@[]}%
 }
+\def\PORTA@[#1]{%
+    \ifx\relax#1\relax
+        \char"1450F%
+    \else \ifnum #1=2
+        \char"14511%
+    \fi\fi}
 \newcommand{\LCCXXXVIII}{\char"14510}
 \newcommand{\LCCXL}{\char"14512}
 \newcommand{\KIX}{\char"14513}
@@ -652,13 +738,15 @@
 \newcommand{\DOMUSX}{\char"1451D}
 \newcommand{\DOMUSSCALA}{\char"1451E}
 \newcommand{\LCCLII}{\char"1451F}
-\newcommand{\EUNUCHUS}[1][]{
-    \ifx\relax#1\relax
-        {\char"14611}
-    \else \ifnum #1=2
-        {\char"14520}
-    \fi\fi
+\def\EUNUCHUS{%
+    \@ifnextchar[{\EUNUCHUS@}{\EUNUCHUS@[]}%
 }
+\def\EUNUCHUS@[#1]{%
+    \ifx\relax#1\relax
+        \char"14611%
+    \else \ifnum #1=2
+        \char"14520%
+    \fi\fi}
 \newcommand{\HORREUM}{\char"14521}
 \newcommand{\LCCLVI}{\char"14522}
 \newcommand{\ARGENTUM}{\char"14523}
@@ -681,13 +769,15 @@
 \newcommand{\SCUTUM}{\char"14533}
 \newcommand{\LCCLXXIII}{\char"14534}
 \newcommand{\LCCLXXIV}{\char"14535}
-\newcommand{\FRATER}[1][]{
-    \ifx\relax#1\relax
-        {\char"14430}
-    \else \ifnum #1=2
-        {\char"14537}
-    \fi\fi
+\def\FRATER{%
+    \@ifnextchar[{\FRATER@}{\FRATER@[]}%
 }
+\def\FRATER@[#1]{%
+    \ifx\relax#1\relax
+        \char"14430%
+    \else \ifnum #1=2
+        \char"14537%
+    \fi\fi}
 \newcommand{\IUDEXLA}{\char"14538}
 \newcommand{\LCCLXXIX}{\char"1453A}
 \newcommand{\MALLEUS}{\char"1453B}
@@ -696,13 +786,15 @@
 \newcommand{\TUZZI}{\char"1453E}
 \newcommand{\LCCLXXXIV}{\char"1453F}
 \newcommand{\IACULUM}{\char"14540}
-\newcommand{\ZU}[1][]{
-    \ifx\relax#1\relax
-        {\char"14540}
-    \else \ifnum #1=2
-        {\char"145F5}
-    \fi\fi
+\def\ZU{%
+    \@ifnextchar[{\ZU@}{\ZU@[]}%
 }
+\def\ZU@[#1]{%
+    \ifx\relax#1\relax
+        \char"14540%
+    \else \ifnum #1=2
+        \char"145F5%
+    \fi\fi}
 \newcommand{\ZUWA}{\char"14540}
 \newcommand{\LCCLXXXVII}{\char"14542}
 \newcommand{\CURRUS}{\char"14543}
@@ -713,24 +805,37 @@
         {\char"14545}
     \fi\fi
 }
+\def\AURIGA{%
+    \@ifnextchar[{\AURIGA@}{\AURIGA@[]}%
+}
+\def\AURIGA@[#1]{%
+    \ifx\relax#1\relax
+        \char"14544%
+    \else \ifnum #1=2
+        \char"14545%
+    \fi\fi}
 \newcommand{\HARAI}{\char"14546}
 \newcommand{\ROTA}{\char"14548}
 \newcommand{\HALAI}{\char"14548}
 \newcommand{\LCCXCIII}{\char"14549}
-\newcommand{\THRONUS}[1][]{
-    \ifx\relax#1\relax
-        {\char"1454A}
-    \else \ifnum #1=2
-        {\char"1454F}
-    \fi\fi
+\def\THRONUS{%
+    \@ifnextchar[{\THRONUS@}{\THRONUS@[]}%
 }
-\newcommand{\MENSA}[1][]{
+\def\THRONUS@[#1]{%
     \ifx\relax#1\relax
-        {\char"1454A}
+        \char"1454A%
     \else \ifnum #1=2
-        {\char"1454B}
-    \fi\fi
+        \char"1454F%
+    \fi\fi}
+\def\MENSA{%
+    \@ifnextchar[{\MENSA@}{\MENSA@[]}%
 }
+\def\MENSA@[#1]{%
+    \ifx\relax#1\relax
+        \char"1454A%
+    \else \ifnum #1=2
+        \char"1454B%
+    \fi\fi}
 \newcommand{\SARPA}{\char"1454B}
 \newcommand{\SOLIITHRONUS}{\char"1454C}
 \newcommand{\SOLIIMENSA}{\char"1454C}
@@ -742,38 +847,46 @@
 \newcommand{\LECTUS}{\char"14553}
 \newcommand{\LCCCII}{\char"14554}
 \newcommand{\FUSUS}{\char"14557}
-\newcommand{\HI}[1][]{
-    \ifx\relax#1\relax
-        {\char"145D2}
-    \else \ifnum #1=2
-        {\char"14558}
-    \fi\fi
+\def\HI{%
+    \@ifnextchar[{\HI@}{\HI@[]}%
 }
-\newcommand{\HU}[1][]{
+\def\HI@[#1]{%
     \ifx\relax#1\relax
-        {\char"14559}
+        \char"145D2%
     \else \ifnum #1=2
-        {\char"14588}
-    \fi\fi
+        \char"14558%
+    \fi\fi}
+\def\HU{%
+    \@ifnextchar[{\HU@}{\HU@[]}%
 }
+\def\HU@[#1]{%
+    \ifx\relax#1\relax
+        \char"14559%
+    \else \ifnum #1=2
+        \char"14588%
+    \fi\fi}
 \newcommand{\LCCCVIII}{\char"1455A}
-\newcommand{\CRUX}[1][]{
-    \ifx\relax#1\relax
-        {\char"1455B}
-    \else \ifnum #1=2
-        {\char"1455C}
-    \fi\fi
+\def\CRUX{%
+    \@ifnextchar[{\CRUX@}{\CRUX@[]}%
 }
+\def\CRUX@[#1]{%
+    \ifx\relax#1\relax
+        \char"1455B%
+    \else \ifnum #1=2
+        \char"1455C%
+    \fi\fi}
 \newcommand{\LCCCX}{\char"1455D}
 \newcommand{\LCCCXI}{\char"1455E}
 \newcommand{\LCCCXII}{\char"1455F}
-\newcommand{\VIR}[1][]{
-    \ifx\relax#1\relax
-        {\char"14560}
-    \else \ifnum #1=2
-        {\char"145B5}
-    \fi\fi
+\def\VIR{%
+    \@ifnextchar[{\VIR@}{\VIR@[]}%
 }
+\def\VIR@[#1]{%
+    \ifx\relax#1\relax
+        \char"14560%
+    \else \ifnum #1=2
+        \char"145B5%
+    \fi\fi}
 \newcommand{\HAX}{\char"14561}
 \newcommand{\KAR}{\char"14562}
 \newcommand{\LCCCXVII}{\char"14564}
@@ -785,27 +898,31 @@
 \newcommand{\LCCCXXIV}{\char"1456B}
 \newcommand{\SCRIBA}{\char"1456D}
 \newcommand{\SIGILLUM}{\char"1456E}
-\newcommand{\PU}[1][]{
-    \ifx\relax#1\relax
-        {\char"1456F}
-    \else \ifnum #1=2
-        {\char"145E3}
-    \fi\fi
+\def\PU{%
+    \@ifnextchar[{\PU@}{\PU@[]}%
 }
+\def\PU@[#1]{%
+    \ifx\relax#1\relax
+        \char"1456F%
+    \else \ifnum #1=2
+        \char"145E3%
+    \fi\fi}
 \newcommand{\REL}{\char"14570}
 \newcommand{\KWIA}{\char"14570}
 \newcommand{\LCCCXXIXA}{\char"14571}
 \newcommand{\CAPERESCALPRUM}{\char"14572}
 \newcommand{\AVUS}{\char"14573}
-\newcommand{\NEG}[1][]{
-    \ifx\relax#1\relax
-        {\char"14574}
-    \else \ifnum #1=2
-        {\char"14575}
-    \else \ifnum #1=3
-        {\char"14576}
-    \fi\fi\fi
+\def\NEG{%
+    \@ifnextchar[{\NEG@}{\NEG@[]}%
 }
+\def\NEG@[#1]{%
+    \ifx\relax#1\relax
+        \char"14574%
+    \else \ifnum #1=2
+        \char"14575%
+    \else \ifnum #1=3
+        \char"14576%
+    \fi\fi\fi}
 \newcommand{\LCCCXXXIII}{\char"14577}
 \newcommand{\PA}{\char"14578}
 \newcommand{\ANNUS}{\char"1457A}
@@ -840,34 +957,40 @@
 \newcommand{\UA}{\char"1459A}
 \newcommand{\MUA}{\char"1459B}
 \newcommand{\LCCCLXV}{\char"1459C}
-\newcommand{\OMNIS}[1][]{
-    \ifx\relax#1\relax
-        {\char"1459D}
-    \else \ifnum #1=2
-        {\char"145E3}
-    \fi\fi
+\def\OMNIS{%
+    \@ifnextchar[{\OMNIS@}{\OMNIS@[]}%
 }
+\def\OMNIS@[#1]{%
+    \ifx\relax#1\relax
+        \char"1459D%
+    \else \ifnum #1=2
+        \char"145E3%
+    \fi\fi}
 \newcommand{\OMNISMI}{\char"1459D}
 \newcommand{\TALA}{\char"1459E}
-\newcommand{\MALUS}[1][]{
-    \ifx\relax#1\relax
-        {\char"1459F}
-    \else \ifnum #1=2
-        {\char"145A0}
-    \fi\fi
+\def\MALUS{%
+    \@ifnextchar[{\MALUS@}{\MALUS@[]}%
 }
+\def\MALUS@[#1]{%
+    \ifx\relax#1\relax
+        \char"1459F%
+    \else \ifnum #1=2
+        \char"145A0%
+    \fi\fi}
 \newcommand{\VITA}{\char"145A1}
 \newcommand{\IUSTITIA}{\char"145A3}
 \newcommand{\IUDEX}{\char"145A3}
 \newcommand{\IUDEXRAI}{\char"145A4}
 \newcommand{\TARAIX}{\char"145A4}
-\newcommand{\SACERDOS}[1][]{
-    \ifx\relax#1\relax
-        {\char"14590}
-    \else \ifnum #1=2
-        {\char"145A5}
-    \fi\fi
+\def\SACERDOS{%
+    \@ifnextchar[{\SACERDOS@}{\SACERDOS@[]}%
 }
+\def\SACERDOS@[#1]{%
+    \ifx\relax#1\relax
+        \char"14590%
+    \else \ifnum #1=2
+        \char"145A5%
+    \fi\fi}
 \newcommand{\LCCCLXXIII}{\char"145A6}
 \newcommand{\LCCCLXXIV}{\char"145A7}
 \newcommand{\LCCCLXXV}{\char"145A8}
@@ -886,15 +1009,17 @@
 \newcommand{\WORD}{\char"145B5}
 \newcommand{\VIRIIA}{\char"145B6}
 \newcommand{\SERVUS}{\char"145B7}
-\newcommand{\MI}[1][]{
-    \ifx\relax#1\relax
-        {\char"145BB}
-    \else \ifnum #1=2
-        {\char"145D8}
-    \else \ifnum #1=3
-        {\char"145B7}
-    \fi\fi\fi
+\def\MI{%
+    \@ifnextchar[{\MI@}{\MI@[]}%
 }
+\def\MI@[#1]{%
+    \ifx\relax#1\relax
+        \char"145BB%
+    \else \ifnum #1=2
+        \char"145D8%
+    \else \ifnum #1=3
+        \char"145B7%
+    \fi\fi\fi}
 \newcommand{\THREE}{\char"145B8}
 \newcommand{\TARAI}{\char"145B9}
 \newcommand{\DOMINUS}{\char"145BA}
