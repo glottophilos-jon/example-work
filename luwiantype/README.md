@@ -1,6 +1,6 @@
-LuwianType Package v1.3
+LuwianType Package v1.4
 ==================
-2025/02/01
+2025/02/15
 
 Maintainer: Jonathan Walls
 
@@ -36,7 +36,12 @@ The LuwianFont.ttf file consists of the Google Noto Sans Anatolian Hieroglyphs f
 
 
 Version history:
+
+1.4 - updated command definitions to fix spacing issues
+
 1.3 - modified character for half brackets
+
 1.2 - updated to resolve some minor typos and command formatting
+
 1.1 - updated to comply with CTAN formatting requirements, adjustments to licensing
 
