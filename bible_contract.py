@@ -2,6 +2,8 @@ from urllib import request
 import json
 import platform
 import os
+import signal
+import sys
 
 # determine platform for file gens later
 plattype = platform.system()
@@ -13,6 +15,13 @@ def runrequest(requesturl):
     req = request.Request(requesturl, headers=myheaders)
     res = request.urlopen(req)
     return res
+
+# handler for Ctrl+C SIGINT kill, allows graceful death
+def signal_handler(sig, frame):
+    print('\nOperation canceled!')
+    sys.exit(0)
+
+signal.signal(signal.SIGINT, signal_handler)
 
 # creating a Passage class to define behaviors and attributes of each Bible passage
 class Passage:
@@ -38,14 +47,18 @@ class Passage:
 
     # set up behavior for grabbing the Bible version
     def getversion(self):
-        verreq = "https://getbible.net/v2/translations.json"
+        verreq = "https://api.getbible.net/v2/translations.json"
         try:
             verres = runrequest(verreq)
         except Exception as e:
             print("There was an error accessing the Bible API, please try again later.\n", str(e))
             exit()
         
-        vers = json.load(verres)
+        try:
+            vers = json.load(verres)
+        except Exception as e:
+            print("There was an error getting the version list, please confirm that the API URL is up to date.\n", str(e))
+            exit()
         validver = False
         while validver == False:
             version = input("What version of the Bible would you like to use? ")
@@ -69,14 +82,17 @@ class Passage:
 
     # set up behavior for grabbing the right book
     def getbook(self):
-        bookreq = "https://getbible.net/v2/kjv/books.json"
+        bookreq = "https://api.getbible.net/v2/kjv/books.json"
         try:
             bookres = runrequest(bookreq)
         except Exception as e:
             print("There was an error accessing the Bible API, please try again later.\n", str(e))
             exit()
-
-        books = json.load(bookres)
+        try:
+            books = json.load(bookres)
+        except Exception as e:
+            print("There was an error accessing the selected version, please ensure that the API URL is correct.\n", str(e))
+            exit()
         validbook = False
         while validbook == False:
             book = input("What book would you like to access? ")
@@ -87,7 +103,7 @@ class Passage:
                     bookname = entryname
                     bookfound = True
                     bookno = books[entry]["nr"]
-                    requesturl = "https://getbible.net/v2/" + self.version + "/" + str(bookno) + "/1.json"
+                    requesturl = "https://api.getbible.net/v2/" + self.version + "/" + str(bookno) + "/1.json"
                     try:
                         runrequest(requesturl)
                         validbook = True
@@ -105,14 +121,14 @@ class Passage:
             if len(fullverse) == 2 and fullverse[0].isnumeric() and fullverse[1].isnumeric():
                 chapter = int(fullverse[0])
                 verse = int(fullverse[1]) - 1
-                requesturl = "https://getbible.net/v2/" + self.version + "/" + str(self.book[0]) + "/" + str(chapter) + ".json"
+                requesturl = "https://api.getbible.net/v2/" + self.version + "/" + str(self.book[0]) + "/" + str(chapter) + ".json"
                 try:
                     checkres = runrequest(requesturl)
                     checkjson = json.load(checkres)
                     versedata = checkjson["verses"][verse]
                     validverse = True
                 except Exception as e:
-                    print("The verse you have selected does not exist.")
+                    print("The verse you have selected does not exist, or the API URL is out of date.")
             else:
                 print("Invalid chapter and verse format.")
 
@@ -122,7 +138,7 @@ class Passage:
     def settext(self):
         # handle single verse
         if self.secondverse == None:
-            requesturl = "https://getbible.net/v2/" + self.version + "/" + str(self.book[0]) + "/" + str(self.initialverse[0]) + ".json"
+            requesturl = "https://api.getbible.net/v2/" + self.version + "/" + str(self.book[0]) + "/" + str(self.initialverse[0]) + ".json"
             res = runrequest(requesturl)
             jsondata = json.load(res)
 
@@ -136,7 +152,7 @@ class Passage:
 
             # multiple verses, one chapter
             if firstchapter == lastchapter:
-                requesturl = "https://getbible.net/v2/" + self.version + "/" + str(self.book[0]) + "/" + str(firstchapter) + ".json"
+                requesturl = "https://api.getbible.net/v2/" + self.version + "/" + str(self.book[0]) + "/" + str(firstchapter) + ".json"
                 res = runrequest(requesturl)
                 jsondata = json.load(res)
 
@@ -146,7 +162,7 @@ class Passage:
                         text.append(verse["text"])
             else:
                 # multiple verses, multiple chapters
-                requesturl = "https://getbible.net/v2/" + self.version + "/" + str(self.book[0]) + "/" + str(firstchapter) + ".json"
+                requesturl = "https://api.getbible.net/v2/" + self.version + "/" + str(self.book[0]) + "/" + str(firstchapter) + ".json"
                 res = runrequest(requesturl)
                 jsondata = json.load(res)
 
@@ -157,7 +173,7 @@ class Passage:
                 firstchapter += 1
 
                 while firstchapter <= lastchapter:
-                    requesturl = "https://getbible.net/v2/" + self.version + "/" + str(self.book[0]) + "/" + str(firstchapter) + ".json"
+                    requesturl = "https://api.getbible.net/v2/" + self.version + "/" + str(self.book[0]) + "/" + str(firstchapter) + ".json"
                     res = runrequest(requesturl)
                     jsondata = json.load(res)
 
