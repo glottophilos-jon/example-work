@@ -21,162 +21,1141 @@
 % 1.3 - modified character for half brackets
 % 1.2 - updated to resolve some minor typos and command formatting
 % 1.1 - updated to comply with CTAN formatting requirements, adjustments to licensing
+   
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{luwiantype}[2025/02/15 Luwian Hieroglyph Typing Package]
 
-\documentclass[12pt,A4]{article}
+%Required packages and declarations
 \usepackage{fontspec}
-\usepackage{polyglossia}
-\usepackage[notes,backend=biber]{biblatex-chicago}
-\usepackage{csquotes}
+\usepackage{graphicx}
+\usepackage{stackengine}
+\usepackage{moresize}
 
-\usepackage{expex}
-\setdefaultlanguage{english}
-\usepackage{lua-ul, luacolor}
-\usepackage{hyperref}
-\setmainfont{Charis SIL}
-\usepackage{luwiantype}
-\usepackage{float}
+%Commands for font selection and import
+\newcommand{\Luwian}{\setmainfont[ExternalLocation=Fonts/]{LuwianFont.ttf}\Large}
+\newcommand{\Lat}{\setmainfont{Charis SIL}\normalsize}
 
-\title{The LuwianType Package}
-\author{Jonathan Walls}
-
-\begin{document}
-\maketitle
-
-\section{Introduction}
-
-This package aims to allow platform-agnostic typing in Luwian hieroglyphs using LaTeX. It is based on the Noto Sans Anatolian Hieroglyphic font by Google, and incorporates functionality from the fontspec, stackengine, and graphicx packages in order to create a system for the aforementioned purpose.
-
-\section{Setup}
-The system aims to be maximally user-friendly (to the extent that LaTeX ever is), allowing more-or-less free typing using Latin characters as LaTeX commands which are then converted to hieroglyphic text in the PDF. To begin, in the project folders, one must include:
-\begin{enumerate}
-    \item The Fonts folder containing the necessary fonts
-    \item The luwiantype.sty file containing the commands necessary for the Unicode conversions.
-\end{enumerate}
-
-In the preamble of the main.tex file (or however you name your main project file), one must also include the following line to import the package:\small
-\begin{verbatim}
-\usepackage{luwiantype}
-\end{verbatim}
-\normalsize\newpage
-This will incorporate the fontspec package allowing switching to the Unicode font, bring in the LuwianType functionality from the .sty file, and create a 
-\begin{verbatim}
-    \Luwian
-\end{verbatim} 
-command which will allow easy switching to the cuneiform typing mode. To switch back, simply use the \verb|\Lat| command.
-
-\section{Usage}
-\subsection{Basic Hieroglyphic Typing}
-To use the package, in a given section, you can trigger the cuneiform writing mode by using the \verb|\Luwian| command as listed above. Each character is designated by an uppercase command (to differentiate it from other stock LaTeX commands), and subscripts for sign variants are given in brackets. Typing is made fairly easy by simply turning on caps lock. An example of use is shown below:
-\begin{verbatim}
-    \Luwian\DEUS\KU\AVIS\PA\PA\SA\Lat
-\end{verbatim}
-This displays the hieroglyphic inline text corresponding to: 
-\\
-
-\noindent(DEUS)ku-AVIS-pa-pa-sa
-
-    \noindent\Luwian\DEUS\KU\AVIS\PA\PA\SA\\\Lat
-
-Luwian of course is written in boustrophedon pattern, and the graphicx package has been utilized to create a \verb|\boust{}| command which takes arguments and then mirrors the text for R-to-L reading as shown:
-
-\begin{verbatim}
-    \Luwian\boust{\DEUS\KU\AVIS\PA\PA\SA}\\
-\end{verbatim}
-    \Luwian\boust{\DEUS\KU\AVIS\PA\PA\SA}\\\Lat
-
-\newpage Luwian, however, was written not in strict linear fashion, but included columns as well. This, naturally, is much more easily reproduced in physical media than in text, but the stackengine package allows us to approximate the look and feel of real Luwian text, should this be required. For this purpose, we have the \verb|\gstack{{\argi} {\argii} {\etc}}| command which stacks glyphs in a ``glyph stack," with as many glyphs as needed.
-
-    \begin{verbatim}
-        \Luwian\gstack{{\DEUS} {\KU} {\AVIS}}\gstack{{\PA} {\PA} {\SA}}
-        \HUGE\gstack{{ } {\REX}}
-    \end{verbatim}
-    \Luwian\gstack{{\DEUS} {\KU} {\AVIS}}\gstack{{\PA} {\PA} {\SA}}\HUGE\gstack{{ } {\REX}}\Lat\\
-
-In this example, we can see the two glyph stacks, with each glyph in brackets and separated by a space in the \verb|\gstack| command, shown next to each other, as well as a following stack made up of a single large REX sign and an empty argument. Often, single signs may be written large and take up an entire column, which is best approximated by what is shown above. Here, the font size is changed with \verb|\HUGE|, and a space argument is fed into the glyph stack to help with spacing. This system is very flexible, and able to relatively neatly approximate the look of most Luwian text.\\
-
-To change between S\'A and S\`A, use the following syntax:
-\begin{verbatim}
-    \SA[2]
-    \SA[3]
-    %the base SA character can be had with
-    \SA
-\end{verbatim}
-Thus \Luwian\SA[2], \SA[3], \SA,\setmainfont{Charis SIL}\normalsize in order.
-
-Commands which correspond to numbers, i.e., 1, 2, etc., are in the LaTeX code with 
-\begin{verbatim}
-    \ONE
-    \TWO
-\end{verbatim}
-as LaTeX does not allow numeric characters in command names. Signs with varying vowels like \textit{wa/i} have both vowels in the command name, unseparated, as in \verb|\WAI|. Those signs which are compound, such as LITUUS+na will be designated without any break between the signs as \verb|\LITUUSNA|, except on the rare occasion where a distinction needs to be made between two signs joined by . or +, in which case the latter is designated \verb|PLUS| in the command name. The signs which do not have a standard reading such as \Luwian\LIII\Lat\ will be designated by an L (Laroche) and the appropriate Laroche number in roman numerals, as in \verb|\LIII|. The special signs for word divisions, logograms, and personal identifiers are \Luwian\VIRIIA\Lat\ \verb|\VIRIIA|, \Luwian\LOGS\Lat\ \verb|\LOGS| ("logogram start"), \Luwian\LOGE\Lat\ \verb|\LOGE| ("logogram end"), and \Luwian\PERS\Lat\ \verb|\PERS|.
-
-\subsection{Formatting Transcriptions}
-This package also contains a number of commands which are useful for formatting transcriptions of Luwian, which follows conventions that are often tedious to work through. Some of these will create special characters often used in such transcriptions, as in the following table.
+%Formatting commands
+\newcommand{\badeq}{\char"2E17}
+\newcommand{\hl}{\char"2E22}
+\newcommand{\hr}{\char"2E23}
+\newcommand{\tsup}[1]{\textsuperscript{#1}}
+\newcommand{\tsub}[1]{\textsubscript{#1}}
+\newcommand{\boust}[1]{\reflectbox{#1}}
+\newcommand{\gstack}{\Shortunderstack}
 
 
-\begin{table}[H]
-    \centering
-    \begin{tabular}{cc}
-        \textbf{Command} & \textbf{Effect} \\ \hline
-        \verb|\badeq| (``bad equal") & \badeq\\
-        \verb|\hl| (``half left") & \hl\\
-        \verb|\hr| (``half right") & \hr\\
-    \end{tabular}
-\end{table}
 
-Some other commands are included which serve to facilitate formatting, as shown in the following table.
+%Main sign commands
+\def\EGO{%
+    \@ifnextchar[{\EGO@}{\EGO@[]}%
+}
+\def\EGO@[#1]{%
+    \ifx\relax#1\relax
+        \char"14400%
+    \else \ifnum #1=2
+        \char"14401%
+    \fi\fi}
+\newcommand{\LIII}{\char"14402}
+\def\MONS{%
+    \@ifnextchar[{\MONS@}{\MONS@[]}%
+}
+\def\MONS@[#1]{%
+    \ifx\relax#1\relax
+        \char"144EC%
+    \else \ifnum #1=2
+        \char"14403%
+    \fi\fi}
+\newcommand{\LV}{\char"14404}
+\newcommand{\ADORARE}{\char"14405}
+\newcommand{\EDERE}{\char"14406}
+\newcommand{\BIBERE}{\char"14407}
+\newcommand{\AMPLECTI}{\char"14408}
+\newcommand{\CAPUT}{\char"14409}
+\newcommand{\CAPUTSCALPRUM}{\char"1440A}
+\newcommand{\LXI}{\char"1440B}
+\newcommand{\STATUA}{\char"1440C}
+\newcommand{\LXIII}{\char"1440D}
+\newcommand{\PRAE}{\char"1440E}
+\newcommand{\PARI}{\char"1440E}
+\newcommand{\DOMINA}{\char"1440F}
+\newcommand{\MAGNUSDOMINA}{\char"14410}
+\newcommand{\REX}{\char"14411}
+\newcommand{\MAGNUSREX}{\char"14412}
+\def\A{%
+    \@ifnextchar[{\A@}{\A@[]}%
+}
+\def\A@[#1]{%
+    \ifx\relax#1\relax
+        \char"145F7%
+    \else \ifnum #1=2
+        \char"14413%
+    \fi\fi}
+\newcommand{\LXX}{\char"14414}
+\newcommand{\HEROS}{\char"14415}
+\newcommand{\LOQUI}{\char"14416}
+\newcommand{\LXXIII}{\char"14417}
+\newcommand{\LIS}{\char"14418}
+\newcommand{\OCULUS}{\char"14419}
+\newcommand{\FRONS}{\char"1441A}
+\newcommand{\VERSUS}{\char"1441B}
+\newcommand{\LIBARE}{\char"1441C}
+\newcommand{\FORTIS}{\char"1441D}
+\def\TA{%
+    \@ifnextchar[{\TA@}{\TA@[]}%
+}
+\def\TA@[#1]{%
+    \ifx\relax#1\relax
+        \char"14470%
+    \else \ifnum #1=2
+        \char"1441E%
+    \else \ifnum #1=3
+        \char"1442C%
+    \else \ifnum #1=6
+        \char"1445B%
+    \fi\fi\fi\fi}
+\newcommand{\LXXX}{\char"1441F}
+\newcommand{\LIGARE}{\char"14420}
+\newcommand{\PUGNUSPUGNUS}{\char"14420}
+\newcommand{\BRACCHIUM}{\char"14421}
+\newcommand{\LXXXIII}{\char"14422}
+\newcommand{\POST}{\char"14423}
+\def\NA{%
+    \@ifnextchar[{\NA@}{\NA@[]}%
+}
+\def\NA@[#1]{%
+    \ifx\relax#1\relax
+        \char"14424%
+    \else \ifnum #1=2
+        \char"1445D%
+    \fi\fi}
+\newcommand{\LITUUSNA}{\char"14425}
+\newcommand{\LXXXVII}{\char"14426}
+\newcommand{\LXXXVIII}{\char"14427}
+\newcommand{\PUGNUS}{\char"14428}
+\newcommand{\PUGNUSX}{\char"14429}
+\newcommand{\LXL}{\char"1442A}
+\def\CAPERE{%
+    \@ifnextchar[{\CAPERE@}{\CAPERE@[]}%
+}
+\def\CAPERE@[#1]{%
+    \ifx\relax#1\relax
+        \char"1442B%
+    \else \ifnum #1=2
+        \char"1442E%
+    \fi\fi}
+\newcommand{\CAPEREIICAPEREII}{\char"1442D}
+\newcommand{\LXLIV}{\char"1442F}
+\newcommand{\INFANS}{\char"14430}
+\newcommand{\FILIUS}{\char"14430}
+\newcommand{\FILIA}{\char"14431}
+\newcommand{\REXINFANS}{\char"14432}
+\newcommand{\REXFILIUS}{\char"14432}
+\newcommand{\REXFILIA}{\char"14433}
+\newcommand{\MAGNUSFILIA}{\char"14434}
+\newcommand{\LXLVII}{\char"14435}
+\newcommand{\LXLVIII}{\char"14436}
+\newcommand{\ATAII}{\char"14437}
+\newcommand{\LL}{\char"14438}
+\newcommand{\LLI}{\char"14439}
+\newcommand{\MANUSCULTER}{\char"1443A}
+\newcommand{\ENSIS}{\char"1443B}
+\newcommand{\LLIV}{\char"1443C}
+\def\NI{%
+    \@ifnextchar[{\NI@}{\NI@[]}%
+}
+\def\NI@[#1]{%
+    \ifx\relax#1\relax
+        \char"145D0%
+    \else \ifnum #1=2
+        \char"144F5%
+    \else \ifnum #1=3
+        \char"1443D%
+    \fi\fi\fi}
+\def\KA{%
+    \@ifnextchar[{\KA@}{\KA@[]}%
+}
+\def\KA@[#1]{%
+    \ifx\relax#1\relax
+        \char"145E7%
+    \else \ifnum #1=2
+        \char"1443E%
+    \fi\fi}
+\newcommand{\INFRA}{\char"1443F}
+\newcommand{\SUB}{\char"1443F}
+\newcommand{\CUM}{\char"14440}
+\newcommand{\MANUS}{\char"14441}
+\newcommand{\LLX}{\char"14442}
+\newcommand{\LLXI}{\char"14443}
+\newcommand{\LONGUS}{\char"14444}
+\newcommand{\LLXIII}{\char"14445}
+\newcommand{\LLXIV}{\char"14446}
+\newcommand{\PONERE}{\char"14447}
+\newcommand{\DARE}{\char"14448}
+% I assume my past self had a reason for defining this this way, but it doesn't really matter for functionality
+\def\PI{%
+    \@ifnextchar[{\PI@}{\PI@[]}%
+}
+\def\PI@[#1]{%
+    \ifx\relax#1\relax
+        \char"14449%
+    \fi}
+\def\MANDARE{%
+    \@ifnextchar[{\MANDARE@}{\MANDARE@[]}%
+}
+\def\MANDARE@[#1]{%
+    \ifx\relax#1\relax
+        \char"1444A%
+    \else \ifnum #1=2
+        \char"1444B%
+    \fi\fi}
+\newcommand{\DAREDARE}{\char"1444A}
+\newcommand{\LLXVII}{\char"1444C}
+\newcommand{\LLXVIII}{\char"1444D}
+\newcommand{\LLXIX}{\char"1444E}
+\newcommand{\SUPER}{\char"1444F}
+\newcommand{\SARAI}{\char"14555}
+\newcommand{\LLXXI}{\char"14450}
+\newcommand{\LLXXII}{\char"14451}
+\newcommand{\AUDIRE}{\char"14452}
+\newcommand{\LLXXIV}{\char"14453}
+\newcommand{\LLXXV}{\char"14454}
+\newcommand{\LLXXVI}{\char"14455}
+\newcommand{\LLXXVII}{\char"14456}
+\newcommand{\ALA}{\char"14457}
+\newcommand{\FEMINA}{\char"14458}
+\newcommand{\MATER}{\char"14458}
+\def\SARMA{%
+    \@ifnextchar[{\SARMA@}{\SARMA@[]}%
+}
+\def\SARMA@[#1]{%
+    \ifx\relax#1\relax
+        \char"14459%
+    \else \ifnum #1=2
+        \char"1445A%
+    \fi\fi}
+\def\CRUS{%
+    \@ifnextchar[{\CRUS@}{\CRUS@[]}%
+}
+\def\CRUS@[#1]{%
+    \ifx\relax#1\relax
+        \char"1445B%
+    \else \ifnum #1=2
+        \char"1445D%
+    \fi\fi}
+\newcommand{\CRUSFLUMEN}{\char"1445C}
+\newcommand{\GENUFLECTERE}{\char"1445E}
+\newcommand{\CRUSCRUS}{\char"1445F}
+\newcommand{\LLXXXVII}{\char"14460}
+\newcommand{\LLXXXVIII}{\char"14461}
+\def\TU{%
+    \@ifnextchar[{\TU@}{\TU@[]}%
+}
+\def\TU@[#1]{%
+    \ifx\relax#1\relax
+        \char"14462%
+    \else \ifnum #1=2
+        \char"1456C%
+    \else \ifnum #1=3
+        \char"1456D%
+    \else \ifnum #1=4
+        \char"14506%
+    \fi\fi\fi\fi}
+\def\PES{%
+    \@ifnextchar[{\PES@}{\PES@[]}%
+}
+\def\PES@[#1]{%
+    \ifx\relax#1\relax
+        \char"14463%
+    \else \ifnum #1=2
+        \char"14466%
+    \fi\fi}
+\def\TI{%
+    \@ifnextchar[{\TI@}{\TI@[]}%
+}
+\def\TI@[#1]{%
+    \ifx\relax#1\relax
+        \char"14463%
+    \else \ifnum #1=2
+        \char"1461F%
+    \else \ifnum #1=3
+        \char"14644%
+    \fi\fi\fi}
+\newcommand{\PESSCALAROTAE}{\char"14464}
+\newcommand{\LXCII}{\char"14465}
+\newcommand{\LXCIV}{\char"14467}
+\newcommand{\PESIIPESII}{\char"14468}
+\newcommand{\PESIIPES}{\char"14469}
+\def\LEO{%
+    \@ifnextchar[{\LEO@}{\LEO@[]}%
+}
+\def\LEO@[#1]{%
+    \ifx\relax#1\relax
+        \char"1446A%
+    \else \ifnum #1=2
+        \char"1446B%
+    \fi\fi}
+\newcommand{\BESTIA}{\char"1446A}
+\def\CANIS{%
+    \@ifnextchar[{\CANIS@}{\CANIS@[]}%
+}
+\def\CANIS@[#1]{%
+    \ifx\relax#1\relax
+        \char"1446C%
+    \else \ifnum #1=2
+        \char"1446D%
+    \fi\fi}
+\newcommand{\EQUUS}{\char"1446E}
+\def\ASINUS{%
+    \@ifnextchar[{\ASINUS@}{\ASINUS@[]}%
+}
+\def\ASINUS@[#1]{%
+    \ifx\relax#1\relax
+        \char"1446F%
+    \else \ifnum #1=2
+        \char"14471%
+    \fi\fi}
+\newcommand{\ASINUSIIA}{\char"14472}
+\def\CERVUS{%
+    \@ifnextchar[{\CERVUS@}{\CERVUS@[]}%
+}
+\def\CERVUS@[#1]{%
+    \ifx\relax#1\relax
+        \char"14473%
+    \else \ifnum #1=2
+        \char"14474%
+    \else \ifnum #1=3
+        \char"14475%
+    \fi\fi\fi}
+\def\RU{%
+    \@ifnextchar[{\RU@}{\RU@[]}%
+}
+\def\RU@[#1]{%
+    \ifx\relax#1\relax
+        \char"145D1%
+    \else \ifnum #1=2
+        \char"14473%
+    \fi\fi}
+\def\CAPRA{%
+    \@ifnextchar[{\CAPRA@}{\CAPRA@[]}%
+}
+\def\CAPRA@[#1]{%
+    \ifx\relax#1\relax
+        \char"14476%
+    \else \ifnum #1=2
+        \char"14478%
+    \fi\fi}
+\def\SA{%
+    \@ifnextchar[{\SA@}{\SA@[]}%
+}
+\def\SA@[#1]{%
+    \ifx\relax#1\relax
+        \char"145D4%
+    \else \ifnum #1=2
+        \char"145E6%
+    \else \ifnum #1=3
+        \char"14477%
+    \else \ifnum #1=4
+        \char"145C6%
+    \else \ifnum #1=5
+        \char"1456E%
+    \else \ifnum #1=6
+        \char"14500%
+    \else \ifnum #1=7
+        \char"14563%
+    \else \ifnum #1=8
+        \char"145AD%
+    \fi\fi\fi\fi\fi\fi\fi\fi}
+\newcommand{\CAPRAIIA}{\char"14479}
+\def\BOS{%
+    \@ifnextchar[{\BOS@}{\BOS@[]}%
+}
+\def\BOS@[#1]{%
+    \ifx\relax#1\relax
+        \char"1447A%
+    \else \ifnum #1=2
+        \char"1447C%
+    \fi\fi}
+\newcommand{\U}{\char"1447B}
+\newcommand{\LCVI}{\char"1447D}
+\newcommand{\BOSMI}{\char"1447E}
+\newcommand{\MU}{\char"1447F}
+\newcommand{\MUWA}{\char"14480}
+\newcommand{\BOSIIMI}{\char"14481}
+\newcommand{\CORNU}{\char"14482}
+\def\SU{%
+    \@ifnextchar[{\SU@}{\SU@[]}%
+}
+\def\SU@[#1]{%
+    \ifx\relax#1\relax
+        \char"145A2%
+    \else \ifnum #1=2
+        \char"14482%
+    \else \ifnum #1=3
+        \char"145F5%
+    \fi\fi\fi}
+\newcommand{\VITELLUS}{\char"14483}
+\def\OVIS{%
+    \@ifnextchar[{\OVIS@}{\OVIS@[]}%
+}
+\def\OVIS@[#1]{%
+    \ifx\relax#1\relax
+        \char"14484%
+    \else \ifnum #1=2
+        \char"14486%
+    \else \ifnum #1=3
+        \char"14487%
+    \fi\fi\fi}
+\def\MA{%
+    \@ifnextchar[{\MA@}{\MA@[]}%
+}
+\def\MA@[#1]{%
+    \ifx\relax#1\relax
+        \char"14485%
+    \else \ifnum #1=2
+        \char"14598%
+    \else \ifnum #1=3
+        \char"14556%
+    \fi\fi\fi}
+\newcommand{\LINGERE}{\char"14488}
+\def\ZA{%
+    \@ifnextchar[{\ZA@}{\ZA@[]}%
+}
+\def\ZA@[#1]{%
+    \ifx\relax#1\relax
+        \char"145AA%
+    \else \ifnum #1=2
+        \char"14579%
+    \else \ifnum #1=3
+        \char"1457C%
+    \else \ifnum #1=4
+        \char"14488%
+    \fi\fi\fi\fi}
+\newcommand{\LCXIII}{\char"14489}
+\newcommand{\LITUUSU}{\char"1448A}
+\def\LEPUS{%
+    \@ifnextchar[{\LEPUS@}{\LEPUS@[]}%
+}
+\def\LEPUS@[#1]{%
+    \ifx\relax#1\relax
+        \char"1448B%
+    \else \ifnum #1=2
+        \char"1448C%
+    \fi\fi}
+\newcommand{\TAPA}{\char"1448C}
+\newcommand{\LCXVI}{\char"1448D}
+\newcommand{\LCXVII}{\char"1448E}
+\newcommand{\LCXVIII}{\char"1448F}
+\newcommand{\LCXIX}{\char"14490}
+\newcommand{\GRYLLUS}{\char"14491}
+\newcommand{\SPHINX}{\char"14492}
+\newcommand{\LCXXII}{\char"14493}
+\newcommand{\LCXXIII}{\char"14494}
+\newcommand{\LCXXIV}{\char"14495}
+\def\LI{%
+    \@ifnextchar[{\LI@}{\LI@[]}%
+}
+\def\LI@[#1]{%
+    \ifx\relax#1\relax
+        \char"14539%
+    \else \ifnum #1=2
+        \char"14496%
+    \else \ifnum #1=3
+        \char"14547%
+    \fi\fi\fi}
+\newcommand{\UNGULA}{\char"14497}
+\newcommand{\LCXXVI}{\char"14498}
+\newcommand{\LCXXVII}{\char"14499}
+\def\AVIS{%
+    \@ifnextchar[{\AVIS@}{\AVIS@[]}%
+}
+\def\AVIS@[#1]{%
+    \ifx\relax#1\relax
+        \char"1449A%
+    \else \ifnum #1=2
+        \char"1449E%
+    \else \ifnum #1=3
+        \char"1449C%
+    \else \ifnum #1=4
+        \char"1449F%
+    \else \ifnum #1=5
+        \char"1449D
+    \fi\fi\fi\fi\fi}
+\def\ZI{%
+    \@ifnextchar[{\ZI@}{\ZI@[]}%
+}
+\def\ZI@[#1]{%
+    \ifx\relax#1\relax
+        \char"145A9%
+    \else \ifnum #1=2
+        \char"14560%
+    \else \ifnum #1=3
+        \char"1457B%
+    \else \ifnum #1=4
+        \char"1449A%
+    \fi\fi\fi\fi}
+\newcommand{\LCXXIX}{\char"1449B}
+\newcommand{\AQUILA}{\char"1449F}
+\newcommand{\ARAI}{\char"144A0}
+\newcommand{\AVISX}{\char"144A1}
+\newcommand{\LCXXXVA}{\char"144A2}
+\newcommand{\LCXXXVI}{\char"144A3}
+\newcommand{\LIBATIO}{\char"144A4}
+\newcommand{\PISCIS}{\char"144A5}
+\newcommand{\LCXXXIX}{\char"144A6}
+\newcommand{\LCXL}{\char"144A7}
+\newcommand{\LCXLI}{\char"144A8}
+\newcommand{\LXCLII}{\char"144A9}
+\newcommand{\LCXLIII}{\char"144AA}
+\newcommand{\LCXLIV}{\char"144AB}
+\newcommand{\LCXLV}{\char"144AC}
+\newcommand{\LCXLVI}{\char"144AD}
+\newcommand{\LCXLVII}{\char"144AE}
+\newcommand{\JANUS}{\char"144AF}
+\newcommand{\LCXLIX}{\char"144B0}
+\newcommand{\LCL}{\char"144B1}
+\newcommand{\TELIPINU}{\char"144B2}
+\newcommand{\LCLII}{\char"144B3}
+\def\NU{%
+    \@ifnextchar[{\NU@}{\NU@[]}%
+}
+\def\NU@[#1]{%
+    \ifx\relax#1\relax
+        \char"144B4%
+    \else \ifnum #1=2
+        \char"144BF%
+    \fi\fi}
+\newcommand{\LCLIV}{\char"144B5}
+\newcommand{\LCLV}{\char"144B6}
+\newcommand{\LCLVI}{\char"144B7}
+\newcommand{\LCLVII}{\char"144B8}
+\newcommand{\LCLVIII}{\char"144B9}
+\newcommand{\LCLIX}{\char"144BA}
+\newcommand{\VITIS}{\char"144BB}
+\newcommand{\WIYA}{\char"144BB}
+\newcommand{\LCLXI}{\char"144BC}
+\newcommand{\LCLXII}{\char"144BD}
+\newcommand{\LCLXIII}{\char"144BE}
+\newcommand{\LCLXIV}{\char"144BF}
+\def\BONUS{%
+    \@ifnextchar[{\BONUS@}{\BONUS@[]}%
+}
+\def\BONUS@[#1]{%
+    \ifx\relax#1\relax
+        \char"144C0%
+    \else \ifnum #1=2
+        \char"145A2%
+    \fi\fi}
+\def\WAI{%
+    \@ifnextchar[{\WAI@}{\WAI@[]}%
+}
+\def\WAI@[#1]{%
+    \ifx\relax#1\relax
+        \char"145EC%
+    \else \ifnum #1=2
+        \char"144C1%
+    \else \ifnum #1=3
+        \char"144C0%
+    \else \ifnum #1=4
+        \char"144EC%
+    \else \ifnum #1=5
+        \char"144E9%
+    \else \ifnum #1=6
+        \char"144E4%
+    \else \ifnum #1=7
+        \char"14541%
+    \else \ifnum #1=9
+        \char"1453B%
+    \fi\fi\fi\fi\fi\fi\fi\fi}
+\newcommand{\LCLXVII}{\char"144C2}
+\newcommand{\LCLXVIII}{\char"144C3}
+\newcommand{\LCLXIX}{\char"144C4}
+\newcommand{\LCLXX}{\char"144C5}
+\newcommand{\LCLXXI}{\char"144C6}
+\def\TAI{%
+    \@ifnextchar[{\TAI@}{\TAI@[]}%
+}
+\def\TAI@[#1]{%
+    \ifx\relax#1\relax
+        \char"14566%
+    \else \ifnum #1=4
+        \char"14566%
+    \else \ifnum #1=5
+        \char"144C7%
+    \fi\fi\fi}
+\def\LAI{%
+    \@ifnextchar[{\LAI@}{\LAI@[]}%
+}
+\def\LAI@[#1]{%
+    \ifx\relax#1\relax
+        \char"14566%
+    \else \ifnum #1=2
+        \char"144C7%
+    \fi\fi}
+\newcommand{\HASTARIUS}{\char"144C8}
+\def\SI{%
+    \@ifnextchar[{\SI@}{\SI@[]}%
+}
+\def\SI@[#1]{%
+    \ifx\relax#1\relax
+        \char"144C9%
+    \else \ifnum #1=2
+        \char"145FE%
+    \fi\fi}
+\newcommand{\LINGUA}{\char"144CA}
+\newcommand{\LA}{\char"144CA}
+\newcommand{\LALA}{\char"144CB}
+\newcommand{\LINGUACLAVUS}{\char"144CC}
+\newcommand{\LARAA}{\char"144CD}
+\newcommand{\HORDEUM}{\char"144CE}
+\newcommand{\HWIX}{\char"144CE}
+\newcommand{\LCLXXX}{\char"144CF}
+\newcommand{\PANIS}{\char"144D0}
+\newcommand{\PAX}{\char"144D0}
+\newcommand{\CAELUM}{\char"144D1}
+\newcommand{\LCLXXXIII}{\char"144D2}
+\newcommand{\LCLXXXIV}{\char"144D3}
+\newcommand{\LCLXXXV}{\char"144D4}
+\newcommand{\LCLXXXVI}{\char"144D5}
+\newcommand{\LCLXXXVII}{\char"144D6}
+\newcommand{\LCLXXXVIII}{\char"144D7}
+\newcommand{\LCLXXXIX}{\char"144D8}
+\def\SOL{%
+    \@ifnextchar[{\SOL@}{\SOL@[]}%
+}
+\def\SOL@[#1]{%
+    \ifx\relax#1\relax
+        \char"144DA%
+    \else \ifnum #1=2
+        \char"144D9%
+    \fi\fi}
+\newcommand{\ORIENS}{\char"144DB}
+\newcommand{\LUNA}{\char"144DC}
+\newcommand{\LCXCIV}{\char"144DD}
+\newcommand{\LCXCV}{\char"144DE}
+\newcommand{\HATTI}{\char"144DF}
+\def\HA{%
+    \@ifnextchar[{\HA@}{\HA@[]}%
+}
+\def\HA@[#1]{%
+    \ifx\relax#1\relax
+        \char"144F7%
+    \else \ifnum #1=2
+        \char"144DF%
+    \fi\fi}
+\newcommand{\HATTILI}{\char"144E0}
+\newcommand{\HATTUSILI}{\char"144E0}
+\newcommand{\HAIILI}{\char"144E0}
+\newcommand{\LCXCVIII}{\char"144E1}
+\newcommand{\TONITRUS}{\char"144E2}
+\newcommand{\FULGUR}{\char"144E3}
+\newcommand{\TERRA}{\char"144E4}
+\newcommand{\LOCUS}{\char"144E4}
+\newcommand{\VIATERRASCALPRUM}{\char"144E5}
+\newcommand{\VIATERRAPLUSSCALPRUM}{\char"144E6}
+\newcommand{\DEUSVIATERRA}{\char"144E7}
+\newcommand{\LCCIII}{\char"144E8}
+\newcommand{\LCCV}{\char"144EA}
+\newcommand{\LCCVI}{\char"144EB}
+\newcommand{\LEOMONSTULEO}{\char"144ED}
+\newcommand{\LCCVIII}{\char"144EE}
+\def\I{%
+    \@ifnextchar[{\I@}{\I@[]}%
+}
+\def\I@[#1]{%
+    \ifx\relax#1\relax
+        \char"144EF%
+    \else \ifnum #1=2
+        \char"14550%
+    \fi\fi}
+\newcommand{\IRAI}{\char"144F0}
+\newcommand{\RII}{\char"144F0}
+\def\IA{%
+    \@ifnextchar[{\IA@}{\IA@[]}%
+}
+\def\IA@[#1]{%
+    \ifx\relax#1\relax
+        \char"144F1%
+    \else \ifnum #1=2
+        \char"14551%
+    \else \ifnum #1=3
+        \char"145AC%
+    \fi\fi\fi}
+\newcommand{\LCCXI}{\char"144F2}
+\newcommand{\FLUMEN}{\char"144F3}
+\newcommand{\LCCXIII}{\char"144F4}
+\newcommand{\FONS}{\char"144F6}
+\newcommand{\FINES}{\char"144F8}
+\newcommand{\FINESHA}{\char"144F9}
+\newcommand{\ARHA}{\char"144F9}
+\newcommand{\LCCXVII}{\char"144FA}
+\newcommand{\LCCXVIII}{\char"144FB}
+\newcommand{\LCCXIX}{\char"144FC}
+\newcommand{\LCCXX}{\char"144FD}
+\newcommand{\VIA}{\char"144FE}
+\newcommand{\LCCXXII}{\char"144FF}
+\newcommand{\LCCXXIV}{\char"14501}
+\newcommand{\URBS}{\char"14502}
+\newcommand{\ISHUWA}{\char"14503}
+\newcommand{\URBSRAILI}{\char"14504}
+\newcommand{\URBSLI}{\char"14505}
+\newcommand{\MURSILI}{\char"14505}
+\newcommand{\REGIO}{\char"14506}
+\newcommand{\MIIIREGIO}{\char"14507}
+\newcommand{\LCCXXX}{\char"14508}
+\newcommand{\CASTRUM}{\char"14509}
+\newcommand{\LCCXXXII}{\char"1450A}
+\newcommand{\LCCXXXIII}{\char"1450B}
+\newcommand{\LCCXXXIV}{\char"1450C}
+\newcommand{\TURRIS}{\char"1450D}
+\newcommand{\LCCXXXV}{\char"1450D}
+\newcommand{\MURUS}{\char"1450E}
+\newcommand{\LCCXXXVI}{\char"1450E}
+\def\PORTA{%
+    \@ifnextchar[{\PORTA@}{\PORTA@[]}%
+}
+\def\PORTA@[#1]{%
+    \ifx\relax#1\relax
+        \char"1450F%
+    \else \ifnum #1=2
+        \char"14511%
+    \fi\fi}
+\newcommand{\LCCXXXVIII}{\char"14510}
+\newcommand{\LCCXL}{\char"14512}
+\newcommand{\KIX}{\char"14513}
+\newcommand{\LCCXLII}{\char"14514}
+\newcommand{\CUBITUM}{\char"14515}
+\newcommand{\AEDIFICIUM}{\char"14516}
+\newcommand{\VACUUS}{\char"14517}
+\newcommand{\AEDIFICIUMMINUS}{\char"14517}
+\newcommand{\AEDIFICARE}{\char"14518}
+\newcommand{\AEDIFICIUMPONERE}{\char"14518}
+\newcommand{\DOMUS}{\char"14519}
+\newcommand{\DELERE}{\char"1451A}
+\newcommand{\DOMUSMINUS}{\char"1451A}
+\newcommand{\DEUSDOMUS}{\char"1451B}
+\newcommand{\MAGNUSDOMUS}{\char"1451C}
+\newcommand{\DOMUSX}{\char"1451D}
+\newcommand{\DOMUSSCALA}{\char"1451E}
+\newcommand{\LCCLII}{\char"1451F}
+\def\EUNUCHUS{%
+    \@ifnextchar[{\EUNUCHUS@}{\EUNUCHUS@[]}%
+}
+\def\EUNUCHUS@[#1]{%
+    \ifx\relax#1\relax
+        \char"14611%
+    \else \ifnum #1=2
+        \char"14520%
+    \fi\fi}
+\newcommand{\HORREUM}{\char"14521}
+\newcommand{\LCCLVI}{\char"14522}
+\newcommand{\ARGENTUM}{\char"14523}
+\newcommand{\LCCLVIII}{\char"14524}
+\newcommand{\LCCLIX}{\char"14525}
+\newcommand{\LCCLX}{\char"14526}
+\newcommand{\LCCLXI}{\char"14527}
+\newcommand{\LCCLXII}{\char"14528}
+\newcommand{\LCCLXIII}{\char"14529}
+\newcommand{\PODIUM}{\char"1452A}
+\newcommand{\LCCLXV}{\char"1452B}
+\newcommand{\PESREGIO}{\char"1452C}
+\newcommand{\STELE}{\char"1452D}
+\newcommand{\LAPISSCALPRUM}{\char"1452D}
+\newcommand{\LAPIS}{\char"1452E}
+\newcommand{\SCALPRUM}{\char"1452F}
+\newcommand{\EXERCITUS}{\char"14530}
+\newcommand{\LCCLXX}{\char"14531}
+\newcommand{\LCCLXXI}{\char"14532}
+\newcommand{\SCUTUM}{\char"14533}
+\newcommand{\LCCLXXIII}{\char"14534}
+\newcommand{\LCCLXXIV}{\char"14535}
+\def\FRATER{%
+    \@ifnextchar[{\FRATER@}{\FRATER@[]}%
+}
+\def\FRATER@[#1]{%
+    \ifx\relax#1\relax
+        \char"14430%
+    \else \ifnum #1=2
+        \char"14537%
+    \fi\fi}
+\newcommand{\IUDEXLA}{\char"14538}
+\newcommand{\LCCLXXIX}{\char"1453A}
+\newcommand{\MALLEUS}{\char"1453B}
+\newcommand{\ASCIA}{\char"1453C}
+\newcommand{\LCCLXXXII}{\char"1453D}
+\newcommand{\TUZZI}{\char"1453E}
+\newcommand{\LCCLXXXIV}{\char"1453F}
+\newcommand{\IACULUM}{\char"14540}
+\def\ZU{%
+    \@ifnextchar[{\ZU@}{\ZU@[]}%
+}
+\def\ZU@[#1]{%
+    \ifx\relax#1\relax
+        \char"14540%
+    \else \ifnum #1=2
+        \char"145F5%
+    \fi\fi}
+\newcommand{\ZUWA}{\char"14540}
+\newcommand{\LCCLXXXVII}{\char"14542}
+\newcommand{\CURRUS}{\char"14543}
+\newcommand{\AURIGA}[1][]{
+    \ifx\relax#1\relax
+        {\char"14544}
+    \else \ifnum #1=2
+        {\char"14545}
+    \fi\fi
+}
+\def\AURIGA{%
+    \@ifnextchar[{\AURIGA@}{\AURIGA@[]}%
+}
+\def\AURIGA@[#1]{%
+    \ifx\relax#1\relax
+        \char"14544%
+    \else \ifnum #1=2
+        \char"14545%
+    \fi\fi}
+\newcommand{\HARAI}{\char"14546}
+\newcommand{\ROTA}{\char"14548}
+\newcommand{\HALAI}{\char"14548}
+\newcommand{\LCCXCIII}{\char"14549}
+\def\THRONUS{%
+    \@ifnextchar[{\THRONUS@}{\THRONUS@[]}%
+}
+\def\THRONUS@[#1]{%
+    \ifx\relax#1\relax
+        \char"1454A%
+    \else \ifnum #1=2
+        \char"1454F%
+    \fi\fi}
+\def\MENSA{%
+    \@ifnextchar[{\MENSA@}{\MENSA@[]}%
+}
+\def\MENSA@[#1]{%
+    \ifx\relax#1\relax
+        \char"1454A%
+    \else \ifnum #1=2
+        \char"1454B%
+    \fi\fi}
+\newcommand{\SARPA}{\char"1454B}
+\newcommand{\SOLIITHRONUS}{\char"1454C}
+\newcommand{\SOLIIMENSA}{\char"1454C}
+\newcommand{\DEUSMONSSARPA}{\char"1454D}
+\newcommand{\DEUSMONSMENSA}{\char"1454D}
+\newcommand{\LCCXCVII}{\char"1454E}
+\newcommand{\SOLIUM}{\char"14550}
+\newcommand{\NEPOS}{\char"14552}
+\newcommand{\LECTUS}{\char"14553}
+\newcommand{\LCCCII}{\char"14554}
+\newcommand{\FUSUS}{\char"14557}
+\def\HI{%
+    \@ifnextchar[{\HI@}{\HI@[]}%
+}
+\def\HI@[#1]{%
+    \ifx\relax#1\relax
+        \char"145D2%
+    \else \ifnum #1=2
+        \char"14558%
+    \fi\fi}
+\def\HU{%
+    \@ifnextchar[{\HU@}{\HU@[]}%
+}
+\def\HU@[#1]{%
+    \ifx\relax#1\relax
+        \char"14559%
+    \else \ifnum #1=2
+        \char"14588%
+    \fi\fi}
+\newcommand{\LCCCVIII}{\char"1455A}
+\def\CRUX{%
+    \@ifnextchar[{\CRUX@}{\CRUX@[]}%
+}
+\def\CRUX@[#1]{%
+    \ifx\relax#1\relax
+        \char"1455B%
+    \else \ifnum #1=2
+        \char"1455C%
+    \fi\fi}
+\newcommand{\LCCCX}{\char"1455D}
+\newcommand{\LCCCXI}{\char"1455E}
+\newcommand{\LCCCXII}{\char"1455F}
+\def\VIR{%
+    \@ifnextchar[{\VIR@}{\VIR@[]}%
+}
+\def\VIR@[#1]{%
+    \ifx\relax#1\relax
+        \char"14560%
+    \else \ifnum #1=2
+        \char"145B5%
+    \fi\fi}
+\newcommand{\HAX}{\char"14561}
+\newcommand{\KAR}{\char"14562}
+\newcommand{\LCCCXVII}{\char"14564}
+\newcommand{\TESHUB}{\char"14565}
+\newcommand{\LCCCXX}{\char"14567}
+\newcommand{\LCCCXXI}{\char"14568}
+\newcommand{\PURUS}{\char"14569}
+\newcommand{\LCCCXXIII}{\char"1456A}
+\newcommand{\LCCCXXIV}{\char"1456B}
+\newcommand{\SCRIBA}{\char"1456D}
+\newcommand{\SIGILLUM}{\char"1456E}
+\def\PU{%
+    \@ifnextchar[{\PU@}{\PU@[]}%
+}
+\def\PU@[#1]{%
+    \ifx\relax#1\relax
+        \char"1456F%
+    \else \ifnum #1=2
+        \char"145E3%
+    \fi\fi}
+\newcommand{\REL}{\char"14570}
+\newcommand{\KWIA}{\char"14570}
+\newcommand{\LCCCXXIXA}{\char"14571}
+\newcommand{\CAPERESCALPRUM}{\char"14572}
+\newcommand{\AVUS}{\char"14573}
+\def\NEG{%
+    \@ifnextchar[{\NEG@}{\NEG@[]}%
+}
+\def\NEG@[#1]{%
+    \ifx\relax#1\relax
+        \char"14574%
+    \else \ifnum #1=2
+        \char"14575%
+    \else \ifnum #1=3
+        \char"14576%
+    \fi\fi\fi}
+\newcommand{\LCCCXXXIII}{\char"14577}
+\newcommand{\PA}{\char"14578}
+\newcommand{\ANNUS}{\char"1457A}
+\newcommand{\PITHOSSCUTELLA}{\char"1457A}
+\newcommand{\PITHOS}{\char"1457E}
+\newcommand{\ZAX}{\char"1457D}
+\newcommand{\CULTER}{\char"1457F}
+\newcommand{\LCCCXXXIX}{\char"14580}
+\newcommand{\ANNUSANNUS}{\char"14581}
+\newcommand{\VAS}{\char"14582}
+\newcommand{\LCCCXLII}{\char"14583}
+\newcommand{\PITHOSA}{\char"14584}
+\newcommand{\CONTRACTUS}{\char"14585}
+\newcommand{\URCEUS}{\char"14586}
+\newcommand{\POCULUM}{\char"14587}
+\newcommand{\LCCCXLVIII}{\char"14589}
+\newcommand{\LCCCXLIX}{\char"1458A}
+\newcommand{\LCCCL}{\char"1458B}
+\newcommand{\LCCCLI}{\char"1458C}
+\newcommand{\LCCCLII}{\char"1458D}
+\newcommand{\LCCCLIII}{\char"1458E}
+\newcommand{\LCCCLIV}{\char"1458F}
+\newcommand{\LCCCLVI}{\char"14591}
+\newcommand{\LCCCLVII}{\char"14592}
+\newcommand{\DIES}{\char"14593}
+\newcommand{\LCCCLIX}{\char"14594}
+\newcommand{\LCCCLIXA}{\char"14595}
+\newcommand{\DEUS}{\char"14596}
+\newcommand{\LCCCLXI}{\char"14597}
+\newcommand{\MAGNUS}{\char"14599}
+\newcommand{\UR}{\char"14599}
+\newcommand{\UA}{\char"1459A}
+\newcommand{\MUA}{\char"1459B}
+\newcommand{\LCCCLXV}{\char"1459C}
+\def\OMNIS{%
+    \@ifnextchar[{\OMNIS@}{\OMNIS@[]}%
+}
+\def\OMNIS@[#1]{%
+    \ifx\relax#1\relax
+        \char"1459D%
+    \else \ifnum #1=2
+        \char"145E3%
+    \fi\fi}
+\newcommand{\OMNISMI}{\char"1459D}
+\newcommand{\TALA}{\char"1459E}
+\def\MALUS{%
+    \@ifnextchar[{\MALUS@}{\MALUS@[]}%
+}
+\def\MALUS@[#1]{%
+    \ifx\relax#1\relax
+        \char"1459F%
+    \else \ifnum #1=2
+        \char"145A0%
+    \fi\fi}
+\newcommand{\VITA}{\char"145A1}
+\newcommand{\IUSTITIA}{\char"145A3}
+\newcommand{\IUDEX}{\char"145A3}
+\newcommand{\IUDEXRAI}{\char"145A4}
+\newcommand{\TARAIX}{\char"145A4}
+\def\SACERDOS{%
+    \@ifnextchar[{\SACERDOS@}{\SACERDOS@[]}%
+}
+\def\SACERDOS@[#1]{%
+    \ifx\relax#1\relax
+        \char"14590%
+    \else \ifnum #1=2
+        \char"145A5%
+    \fi\fi}
+\newcommand{\LCCCLXXIII}{\char"145A6}
+\newcommand{\LCCCLXXIV}{\char"145A7}
+\newcommand{\LCCCLXXV}{\char"145A8}
+\newcommand{\ZIA}{\char"145A9}
+\newcommand{\LITUUS}{\char"145AB}
+\newcommand{\OCCIDENS}{\char"145AC}
+\newcommand{\ONE}{\char"145AD}
+\newcommand{\UNUS}{\char"145AD}
+\newcommand{\MINUS}{\char"145AE}
+\newcommand{\MORI}{\char"145AF}
+\newcommand{\VIRIIMINUS}{\char"145AF}
+\newcommand{\LIGNUM}{\char"145B0}
+\newcommand{\RAI}{\char"145B1}
+\newcommand{\PERS}{\char"145B2}
+\newcommand{\TWO}{\char"145B3}
+\newcommand{\WORD}{\char"145B5}
+\newcommand{\VIRIIA}{\char"145B6}
+\newcommand{\SERVUS}{\char"145B7}
+\def\MI{%
+    \@ifnextchar[{\MI@}{\MI@[]}%
+}
+\def\MI@[#1]{%
+    \ifx\relax#1\relax
+        \char"145BB%
+    \else \ifnum #1=2
+        \char"145D8%
+    \else \ifnum #1=3
+        \char"145B7%
+    \fi\fi\fi}
+\newcommand{\THREE}{\char"145B8}
+\newcommand{\TARAI}{\char"145B9}
+\newcommand{\DOMINUS}{\char"145BA}
+\newcommand{\FOUR}{\char"145BB}
+\newcommand{\FIVE}{\char"145BC}
+\newcommand{\EIGHT}{\char"145BD}
+\newcommand{\LCCCXCIV}{\char"145BE}
+\newcommand{\NINE}{\char"145BF}
+\newcommand{\LCCCXCVI}{\char"145C0}
+\newcommand{\TEN}{\char"145C1}
+\newcommand{\DECEM}{\char"145C1}
+\newcommand{\LCCCXCVIII}{\char"145C2}
+\newcommand{\HUNDRED}{\char"145C3}
+\newcommand{\CENTUM}{\char"145C3}
+\newcommand{\THOUSAND}{\char"145C4}
+\newcommand{\MILLE}{\char"145C4}
+\newcommand{\LCDI}{\char"145C5}
+\newcommand{\SCUTELLA}{\char"145C6}
+\newcommand{\LCDIII}{\char"145C7}
+\newcommand{\ANIMAL}{\char"145C8}
+\newcommand{\LCDV}{\char"145C9}
+\newcommand{\LCDVI}{\char"145CA}
+\newcommand{\LCDVII}{\char"145CB}
+\newcommand{\LCDVIII}{\char"145CC}
+\newcommand{\LCDIX}{\char"145CD}
+\newcommand{\LCDX}{\char"145CE}
+\newcommand{\LOGS}{\char"145CE}
+\newcommand{\LCDXA}{\char"145CF}
+\newcommand{\LOGE}{\char"145CF}
+\newcommand{\LCDXIV}{\char"145D3}
+\newcommand{\LCDXVI}{\char"145D5}
+\newcommand{\SAX}{\char"145D6}
+\newcommand{\LCDXVIII}{\char"145D7}
+\newcommand{\URHI}{\char"145D8}
+\newcommand{\LCDXX}{\char"145D9}
+\newcommand{\US}{\char"145DA}
+\newcommand{\PANISSCUTELLA}{\char"145DB}
+\newcommand{\KU}{\char"145DC}
+\newcommand{\LCDXXIV}{\char"145DD}
+\newcommand{\LCDXXV}{\char"145DE}
+\newcommand{\LCDXXVI}{\char"145DF}
+\newcommand{\LCDXXVII}{\char"145E0}
+\newcommand{\LCDXXVIII}{\char"145E1}
+\newcommand{\TANA}{\char"145E2}
+\newcommand{\LCDXXXI}{\char"145E4}
+\newcommand{\LCDXXXII}{\char"145E5}
+\newcommand{\AX}{\char"145E8}
+\newcommand{\LCDXXXVI}{\char"145E9}
+\newcommand{\LCDXXXVII}{\char"145EA}
+\newcommand{\PASTOR}{\char"145EB}
+\newcommand{\LCDXL}{\char"145ED}
+\newcommand{\LCDXLI}{\char"145EE}
+\newcommand{\LCDXLII}{\char"145EF}
+\newcommand{\LCDXLIII}{\char"145F0}
+\newcommand{\LCDXLIV}{\char"145F1}
+\newcommand{\LAIU}{\char"145F2}
+\newcommand{\KI}{\char"145F3}
+\newcommand{\NIX}{\char"145F4}
+\newcommand{\LCDXLIX}{\char"145F7}
+\newcommand{\RAA}{\char"145F8}
+\newcommand{\HURU}{\char"145F9}
+\newcommand{\LCDLII}{\char"145FA}
+\newcommand{\LCDLIII}{\char"145FB}
+\newcommand{\LCDLIV}{\char"145FC}
+\newcommand{\LAX}{\char"145FD}
+\newcommand{\LCDLVII}{\char"145FF}
+\newcommand{\LCDLVIIA}{\char"14600}
+\newcommand{\LCDLVIII}{\char"14601}
+\newcommand{\LCDLIX}{\char"14602}
+\newcommand{\LCDLX}{\char"14603}
+\newcommand{\LCDLXI}{\char"14604}
+\newcommand{\MAX}{\char"14605}
+\newcommand{\LCDLXIII}{\char"14606}
+\newcommand{\LCDLXIV}{\char"14607}
+\newcommand{\LCDLXV}{\char"14608}
+\newcommand{\LCDLXVI}{\char"14609}
+\newcommand{\LCDLXVII}{\char"1460A}
+\newcommand{\LCDLXVIII}{\char"1460B}
+\newcommand{\LCDLXIX}{\char"1460C}
+\newcommand{\TWELVE}{\char"1460D}
+\newcommand{\LCDLXXI}{\char"1460E}
+\newcommand{\LCDLXXII}{\char"1460F}
+\newcommand{\LCDLXXIII}{\char"14610}
+\newcommand{\LCDLXXV}{\char"14612}
+\newcommand{\LCDLXXVI}{\char"14613}
+\newcommand{\FLAMMAE}{\char"14614}
+\newcommand{\LCDLXXVIII}{\char"14615}
+\newcommand{\LCDLXXIX}{\char"14616}
+\newcommand{\LCDLXXX}{\char"14617}
+\newcommand{\LCDLXXXI}{\char"14618}
+\newcommand{\LCDLXXXII}{\char"14619}
+\newcommand{\LCDXXXIII}{\char"1461A}
+\newcommand{\LCDLXXXIV}{\char"1461B}
+\newcommand{\LCDLXXXV}{\char"1461C}
+\newcommand{\FALX}{\char"1461D}
+\newcommand{\LCDLXXXVII}{\char"1461E}
+\newcommand{\LCDLXXXIX}{\char"14620}
+\newcommand{\LCDXC}{\char"14621}
+\newcommand{\LCDXCI}{\char"14622}
+\newcommand{\LCDXCII}{\char"14623}
+\newcommand{\LCDXCIII}{\char"14624}
+\newcommand{\LCDXCIV}{\char"14625}
+\newcommand{\LCDXCV}{\char"14626}
+\newcommand{\LCDXCVI}{\char"14627}
+\newcommand{\LCDXCVII}{\char"14628}
+\newcommand{\LDI}{\char"14629}
+\newcommand{\LDII}{\char"1462A}
+\newcommand{\LDIII}{\char"1462B}
+\newcommand{\LDIV}{\char"1462C}
+\newcommand{\LDV}{\char"1462D}
+\newcommand{\HANA}{\char"1462E}
+\newcommand{\LDVII}{\char"1462F}
+\newcommand{\CURRERE}{\char"14630}
+\newcommand{\HWIA}{\char"14630}
+\newcommand{\LDIX}{\char"14631}
+\newcommand{\LDXI}{\char"14633}
+\newcommand{\LDXII}{\char"14634}
+\newcommand{\LDXIII}{\char"14635}
+\newcommand{\LDXIV}{\char"14636}
+\newcommand{\LDXV}{\char"14637}
+\newcommand{\LDXVI}{\char"14638}
+\newcommand{\LDXVII}{\char"14639}
+\newcommand{\LDXVIII}{\char"1463A}
+\newcommand{\LDXIX}{\char"1463B}
+\newcommand{\LDXX}{\char"1463C}
+\newcommand{\LDXXI}{\char"1463D}
+\newcommand{\LDXXII}{\char"1463E}
+\newcommand{\LDXXIII}{\char"1463F}
+\newcommand{\CORNUCAPUT}{\char"14640}
+\newcommand{\PROPHETA}{\char"14640}
+\newcommand{\PRINCEPS}{\char"14641}
+\newcommand{\GCXCV}{\char"14642}
+\newcommand{\APER}{\char"14643}
+\newcommand{\LINGUAX}{\char"14645}
+\newcommand{\LDXXX}{\char"14646}
 
 
-\begin{table}[H]
-    \centering
-    \begin{tabular}{cc}
-        \textbf{Command} & \textbf{Effect} \\ \hline
-        \verb|\tsup{}| & \tsup{M}\\
-        \verb|\tsub{}| & \tsub{2}\\
-    \end{tabular}
-\end{table}
 
-\verb|\tsup| and \verb|\tsub| create super- and subscripts, respectively.
-
-\subsection{Working with expex}
-
-If one is using the expex package for interlinear translation or example glossing, the easiest thing to do is to define a new glw level as shown in this example:
-\color{red}
-\begin{verbatim}
-\defineglwlevels{luw}
-\begingl[glwordalign=center,glhangstyle=none, aboveglftskip=0pt, 
- everygla=\normalfont, everyglluw=\Luwian]
-\end{verbatim}\color{black}
-\begin{verbatim}
-\gla REX \textsuperscript{I}t\'a-i-t\'a-sa EGO-wa/i-mi 
-(VIR\textsubscript{2})HEROS (VIR\textsubscript{2})pa-l\'a/\'i-s\`a-ti-[n\'i]-za-sa 
-REX a-wa/i x mi-i-*a//
-\end{verbatim}\color{red}
-\begin{verbatim}
-\glluw {\REX} {\PERS\TA[2]\I\TA[2]\SA} {\EGO\WAI\MI} {\VIR[2]\HEROS} 
-{\VIR[2]\PA\LAI[2]\SA[3]\TI\NI[2]\ZA\SA} {\REX} {\A\WAI} x {\MI\I\A}//
-\end{verbatim}\color{black}
-\begin{verbatim}
-\glb hantawattis Taitas amu\badeq wa\badeq mi hastalis Falistinizzas 
-hantawattis a\badeq wa x ammi//
-\glc king.nom Taitas I.quot.myself Hero Falistina.nom king.nom and.quot x 
-my.dat//
-\glft I am King Taitas, Hero, Falistinian king, and I\newline//
-\endgl
-\end{verbatim}
-
-Note the section at the beginning which defines a ``luw" (Luwian) glw level, which needs to be done only once at the beginning of the document, and note also the \verb|evergylluw=\Luwian| specification in the parameters which assigns the entire line to be in Luwian hieroglyphs. You may of course omit one of the transcription levels, in which case you can simply add the specification to the a, b, or c level instead. This code will produce the following output:\\
-
-\defineglwlevels{luw}
-
-\begingl[glwordalign=center,glhangstyle=none, aboveglftskip=0pt, everygla=\normalfont, everyglluw=\Luwian]
-\gla REX \textsuperscript{I}t\'a-i-t\'a-sa EGO-wa/i-mi (VIR\textsubscript{2})HEROS (VIR\textsubscript{2})pa-l\'a/\'i-s\`a-ti-[n\'i]-za-sa REX a-wa/i x mi-i-*a//
-\glluw {\REX} {\PERS\TA[2]\I\TA[2]\SA} {\EGO\WAI\MI} {\VIR[2]\HEROS} {\VIR[2]\PA\LAI[2]\SA[3]\TI\NI[2]\ZA\SA} {\REX} {\A\WAI} x {\MI\I\A}//
-\glb hantawattis Taitas amu\badeq wa\badeq mi hastalis Falistinizzas hantawattis a\badeq wa x ammi//
-\glc king.nom Taitas I.quot.myself Hero Falistina.nom king.nom and.quot x my.dat//
-\glft I am King Taitas, Hero, Falistinian king, and I\newline//
-\endgl
-
-Happy Luwian!
-\end{document}
 
