@@ -17,18 +17,15 @@
 % 
 %
 % Version history:
+% 2.0 - Major revision, created new structure that allows using HitType and LuwianType packages simultaneously
 % 1.1 - changed command definition structure to fix spacing issues and updated documentation
 % 1.0 - Original Release Version
 
 \documentclass[12pt,A4]{article}
 \usepackage{fontspec}
 \usepackage{polyglossia}
-\usepackage[notes,backend=biber]{biblatex-chicago}
-\usepackage{csquotes}
-\usepackage{graphicx}
 \usepackage{expex}
 \setdefaultlanguage{english}
-\usepackage{lua-ul, luacolor}
 \usepackage{hyperref}
 \setmainfont{Charis SIL}
 \usepackage{hittype}
@@ -41,10 +38,10 @@
 \maketitle
 
 \section{Introduction}
-This package aims to allow platform-agnostic typing in Hittite cuneiform using LaTeX. It is based on the work done by the Hethitologie Portal Mainz at \href{https://www.hethport.uni-wuerzburg.de/cuneifont/}{www.hethport.uni-wuerzburg.de}, using (with written permission) the Ullikummi fonts developed by Prof. Sylvie Vanséveren for Hittite cuneiform. This package was developed for use with LuaLaTeX, functionality with other compilers is not guaranteed.
+This package aims to allow platform-agnostic typing in Hittite cuneiform using LaTeX. It is based on the work done by the Hethitologie Portal Mainz at \href{https://www.hethport.uni-wuerzburg.de/cuneifont/}{www.hethport.uni-wuerzburg.de}, using (with written permission) the Ullikummi fonts developed by Prof. Sylvie Vanséveren for Hittite cuneiform. This package was developed for use with LuaLaTeX and XeLaTeX, functionality with other compilers is not guaranteed.
 
 \section{Setup}
-The system aims to be maximally user-friendly (to the extent that LaTeX ever is), allowing more-or-less free typing using Latin characters as LaTeX commands which are then converted to cuneiform text in the PDF. To begin, in the project folders, one must include:
+The system aims to be maximally user-friendly (to the extent that LaTeX ever is), allowing more-or-less free typing using Latin characters which are then converted to cuneiform text in the PDF. To begin, in the project folders, one must include:
 \begin{enumerate}
     \item The Fonts folder containing the necessary fonts
     \item The hittype.sty file containing the commands necessary for the Unicode conversions.
@@ -57,53 +54,46 @@ In the preamble of the main.tex file, one must also include the following line t
 \normalsize
 This will incorporate the fontspec package allowing switching to the Unicode font, bring in the HitType functionality from the .sty file, and create the 
 \begin{verbatim}
-    \Hitt
+    \Hitt{}
 \end{verbatim} 
-command which will allow easy switching to the cuneiform typing mode. Returning to Latin script can be done with \verb|\Lat|.
+command which will allow easy switching to the cuneiform typing mode.
 
 \section{Usage}
 \subsection{Basic Cuneiform Typing}
-To use the package, in a given section, you can trigger the cuneiform writing mode by using the \verb|\Hitt| command as listed above. Each character is designated by an uppercase command (to differentiate it from other stock LaTeX commands), and subscripts for sign variants are given in brackets. Typing is made fairly easy by simply turning on caps lock. An example of use is shown below:
+To use the package, in a given section, you can trigger the cuneiform writing mode by using the \verb|\Hitt{}| command as listed above. Different sign variants can be made simply by adding the number after the name, as in \verb|lu2|. Signs may be separated either by a space or a full stop. An example of use with both methods is shown below:
 \begin{verbatim}
-    \Hitt\UM\MA \AN\UD\CI \DIC\HAR\CI\HittB\LI\Hitt 
-    \LUGAL\GAL \LUGAL \KUR \HittB\HA\Hitt\AD\TI 
-    \UR\HittB\SAG
-
-    \Lat
+    \Hitt{um.ma.an.ud.ci.dic.har.ci}\Hitt[B]{li}
+    \Hitt{lugal gal lugal kur}\Hitt[B]{ha}\Hitt{ad ti}
+    \Hitt{ur}\Hitt[B]{sag}
+    
 \end{verbatim}
 This displays the cuneiform text corresponding to: 
 \\
 
 \textit{UMMA} \textsuperscript{d}UTU-\textit{\v{S}I} \textsuperscript{m}\textit{Mur-\v{s}i-li} LUGAL.GAL LUGAL KUR \textit{\char"1E2A a-at-ti} UR.SAG
 
-    \Hitt\UM\MA \AN\UD\CI \DIC\HAR\CI\HittB\LI\Hitt \LUGAL\GAL \LUGAL \KUR \HittB\HA\Hitt\AD\TI \UR\HittB\SAG\\
-
-\Lat
+    \Hitt{um.ma.an.ud.ci.dic.har.ci}\Hitt[B]{li}\Hitt{lugal gal lugal kur}\Hitt[B]{ha}\Hitt{ad ti}\Hitt{ur}\Hitt[B]{sag}\\
 
 Note that you can use the commands
 \begin{verbatim}
-    \HittB
-    \HittC
+    \Hitt[B]{}
+    \Hitt[C]{}
 \end{verbatim}
-as shown above to switch to different scribal variants of certain signs or to create certain compound signs. To change between G\'IR and G\`IR, use the following syntax:
+as shown above to switch to different scribal variants of certain signs or to create certain compound signs. 
+
+\newpage
+To change between G\'IR and G\`IR, use the following syntax:
 \begin{verbatim}
-    \GIR[2]
-    \GIR[3]
+    \Hitt{gir2 gir3}
     %the base GIR character can be had with
-    \GIR
+    \Hitt{gir}
 \end{verbatim}
 
-\Hitt\GIR\ \GIR[2]\ \GIR[3]\Lat
+\Hitt{gir.\ .gir2.\ .gir3}\\
 
-All commands follow the listing as found in the HittiteSignList PDF included in the package Documentation folder. Note that <C> is used in place of <\v{S}> for ease of typing (likewise <H> for <\funH>, and that Autotext commands as shown in the document which correspond to numbers, i.e., 1, 2, etc., are replaced in the LaTeX code with \\
+All commands follow the listing as found in the HittiteSignList PDF included in the package Documentation folder. Note that <c> is used in place of <\v{s}> for ease of typing (likewise <h> for <\funh>. Also note that any compound signs which require specifications such as <ekisim5xamac> in the PDF are exactly as given, e.g.\\
 
-\verb|\ONE|\ \ \Hitt\ONE\Lat\\
-
-\verb|\TWO|\ \ \Hitt\TWO\Lat\\
-
-as LaTeX does not allow numeric characters in command names. Also note that any compound signs which require specifications such as <ekisim5xamac> in the PDF use roman numerals and a lowercase <x> in the LaTeX command, e.g.\\
-
-\verb|\EKISIMvxAMAC|\ \ \Hitt\EKISIMvxAMAC\Lat
+\verb|\Hitt{ekisim5xamac}|\ \ \Hitt{ekisim5xamac}
 
 \subsection{Formatting Hittite Transcriptions}
 This package also contains a number of commands which are useful for formatting transcriptions of Hittite, which follows conventions that are often tedious to work through. Some of these will create special characters often used in such transcriptions, as in the following table.
@@ -121,7 +111,7 @@ This package also contains a number of commands which are useful for formatting 
     \end{tabular}
 \end{table}
 
-Certain other commands are not explicitly included in this package but may be used without special inclusion, which are \verb|\v{s}| which generates \v{s}, \verb|\=V| which will generate some vowel \=V with a macron for plene spelling, and \verb|\d{S}| which places a dot below a letter as in \d{S}.
+Certain other commands are not explicitly included in this package but may be used without special inclusion, which are \verb|\v{s}| which generates \v{s}, \verb|\=v| which will generate some vowel \=v with a macron for plene spelling, and \verb|\d{S}| which places a dot below a letter as in \d{S}.
 
 Some other commands are included which serve to facilitate formatting, as shown in the following table.
 
@@ -143,36 +133,48 @@ Some other commands are included which serve to facilitate formatting, as shown 
 
 \subsection{Working with expex}
 
-If one is using the expex package for interlinear translation, the easiest thing to do is to define a new glw level as shown in this example:
+If one is using the expex package for interlinear translation, one option (although not obligatory) is to define a new glw level as shown in this example:
+
 \begin{verbatim}
 \defineglwlevels{cun}
 
-\begingl[glwordalign=center,glhangstyle=none, aboveglftskip=0pt, 
-    everyglcun=\Hitt]
-\gla \sumer{GI\v{S}}{}{lu-ut-ta-a-u\v{s}} kam-ma-ra-a-a\v{s} I\d{S}-
-    BAT \sumer{}{\'E}{-er} \hl t\'u\funh-\funh u-i\v{s}\hr\\ 
-    \bracks{\'u-i-\v{s}}\textit{u-\hl ri-ya-ta\hr-ti}//
-\glcun {\GIC\LU\UD\TA\A\UC} {\KAM\MA\RA\A\AC} {\GIC\BAD} {\E[2]\IR} 
-    {\TAH\HU\IC} {\U[2]\I\CU\RI\IA\TA\TI}//
-\glb \tsup{GI\v{S}}lutt\=au\v{s} kammar\=a\v{s} I\d{S}BAT 
-    \'E-er tu\funh\funh ui\v{s} wi\v{s}uriyatati//
-\glc windows.acc mist.nom seized.3sg house.acc smoke.nom stifled.3sg//
-\glft Mist seized the windows, smoke stifled the house.\newline//
-\endgl
+    \begingl[glwordalign=center,glhangstyle=none, aboveglftskip=0pt]
+    
+    \gla \sumer{GI\v{S}}{}{lu-ut-ta-a-u\v{s}} kam-ma-ra-a-a\v{s} I\d{S}-BAT 
+    \sumer{}{É}{-er} \hl tú\funh-\funh u-i\v{s}\hr\\ 
+    \bracks{ú-i-\v{s}}\textit{u-\hl ri-ya-ta\hr-ti}//
+    
+    \glcun \Hitt{gic lu ud ta a uc} \Hitt{kam ma ra a ac} \Hitt{gic bad} 
+    \Hitt{e2 ir} \Hitt{tah hu ic} \Hitt{u2 i cu ri ia ta ti}//
+    
+    \glb \tsup{GI\v{S}}luttāu\v{s} kammarā\v{s} I\d{S}BAT É-er 
+    tu\funh\funh ui\v{s} wi\v{s}uriyatati//
+    
+    \glc windows.acc mist.nom seized.3sg house.acc smoke.nom stifled.3sg//
+    
+    \glft Mist seized the windows, smoke stifled the house.\newline//
+    \endgl
 \end{verbatim}
 
-Note the section at the beginning which defines a ``cun" (cuneiform) glw level, which needs to be done only once at the beginning of the document, and note also the \verb|evergylcun=\Hitt| specification in the parameters which assigns the entire line to be in Hittite cuneiform. You may of course omit one of the transcription levels, in which case you can simply add the specification to the a, b, or c level instead. This code will produce the following output:\\
+Note the section at the beginning which defines a ``cun" (cuneiform) glw level, which needs to be done only once at the beginning of the document. You may of course omit one of the transcription levels, in which case you can simply use the a, b, or c level instead. This code will produce the following output:\\
 
 \defineglwlevels{cun}
 
-    \begingl[glwordalign=center,glhangstyle=none, aboveglftskip=0pt, everyglcun=\Hitt]
-    \gla \sumer{GI\v{S}}{}{lu-ut-ta-a-u\v{s}} kam-ma-ra-a-a\v{s} I\d{S}-BAT \sumer{}{\'E}{-er} \hl t\'u\funh-\funh u-i\v{s}\hr\\ \bracks{\'u-i-\v{s}}\textit{u-\hl ri-ya-ta\hr-ti}//
-    \glcun {\GIC\LU\UD\TA\A\UC} {\KAM\MA\RA\A\AC} {\GIC\BAD} {\E[2]\IR} {\TAH\HU\IC} {\U[2]\I\CU\RI\IA\TA\TI}//
-    \glb \tsup{GI\v{S}}lutt\=au\v{s} kammar\=a\v{s} I\d{S}BAT \'E-er tu\funh\funh ui\v{s} wi\v{s}uriyatati//
+    \begingl[glwordalign=center,glhangstyle=none, aboveglftskip=0pt]
+    
+    \gla \sumer{GI\v{S}}{}{lu-ut-ta-a-u\v{s}} kam-ma-ra-a-a\v{s} I\d{S}-BAT 
+    \sumer{}{É}{-er} \hl tú\funh-\funh u-i\v{s}\hr\\
+    \bracks{ú-i-\v{s}}\textit{u-\hl ri-ya-ta\hr-ti}//
+    
+    \glcun \Hitt{gic lu ud ta a uc} \Hitt{kam ma ra a ac} \Hitt{gic bad} \Hitt{e2 ir} \Hitt{tah hu ic} \Hitt{u2 i cu ri ia ta ti}//
+    
+    \glb \tsup{GI\v{S}}luttāu\v{s} kammarā\v{s} I\d{S}BAT É-er tu\funh\funh ui\v{s} wi\v{s}uriyatati//
+    
     \glc windows.acc mist.nom seized.3sg house.acc smoke.nom stifled.3sg//
+    
     \glft Mist seized the windows, smoke stifled the house.\newline//
     \endgl
 
-Happy Hittite!
+\centerline{\Large Happy Hittite!}
 \end{document}
 
