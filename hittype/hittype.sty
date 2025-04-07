@@ -17,20 +17,16 @@
 % 
 %
 % Version history:
+% 2.0 - Major revision, created new structure that allows using HitType and LuwianType packages simultaneously
 % 1.1 - changed command definition structure to fix spacing issues and updated documentation
 % 1.0 - Original Release Version
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{hittype}[2025/02/14 Hittite Cuneiform Typing Package]
+\ProvidesPackage{hittype}[2025/04/07 Hittite Cuneiform Typing Package]
 
 %Required packages and declarations
 \usepackage{fontspec}
-
-%Commands for font selection and import
-\newcommand{\Hitt}{\setmainfont[ExternalLocation=Fonts/]{UllikummiA.ttf}\Large}
-\newcommand{\HittB}{\setmainfont[ExternalLocation=Fonts/]{UllikummiB.ttf}\Large}
-\newcommand{\HittC}{\setmainfont[ExternalLocation=Fonts/]{UllikummiC.ttf}\Large}
-\newcommand{\Lat}{\setmainfont{Charis SIL}\normalsize}
+\usepackage{expl3}
 
 %Formatting commands
 \newcommand{\sumer}[3]{\normalfont{\textsuperscript{#1}}\normalfont{#2}\textit{#3}}
@@ -43,993 +39,478 @@
 \newcommand{\tsub}[1]{\textsubscript{#1}}
 \newcommand{\bracks}[1]{\normalfont[\textit{#1}\normalfont]}
 
-%Main sign commands
-\newcommand{\HAL}{\char"1212C}
-\def\PEC{%
-    \@ifnextchar[{\PEC@}{\PEC@[]}%
-}
-\def\PEC@[#1]{%
-    \ifx\relax#1\relax
-        \char"1227E%
-    \else \ifnum #1=2
-        \char"1227E%
-    \fi\fi}
-\newcommand{\BAL}{\char"12044}
-\newcommand{\CIR}{\char"122D3}
-\def\GIR{%
-    \@ifnextchar[{\GIR@}{\GIR@[]}%
-}
-\def\GIR@[#1]{%
-    \ifx\relax#1\relax
-        \char"1212B%
-    \else \ifnum #1=2
-        \char"12108%
-    \else \ifnum #1=3
-        \char"1210A%
-    \else \ifnum #1=4
-        \char"1230B\char"1201C%
-    \fi\fi\fi\fi}
-\newcommand{\TAR}{\char"122FB}
-\newcommand{\AN}{\char"1202D}
-\newcommand{\APIN}{\char"12033}
-\newcommand{\MAH}{\char"12224}
-\newcommand{\NU}{\char"12261}
-\newcommand{\KUL}{\char"121B0}
-\newcommand{\NUMUN}{\char"121B0}
-\newcommand{\ARAD}{\char"12034}
-\newcommand{\MUN}{\char"12075}
-\newcommand{\NAR}{\char"1221C}
-\newcommand{\QA}{\char"122E1}
-\newcommand{\MUG}{\char"1222E}
-\def\UZ{%
-    \@ifnextchar[{\UZ@}{\UZ@[]}%
-}
-\def\UZ@[#1]{%
-    \ifx\relax#1\relax
-        \char"122BB%
-    \else \ifnum #1=6
-        \char"1235A%
-    \fi\fi}
-\newcommand{\HU}{\char"12137}
-\def\U{%
-    \@ifnextchar[{\U@}{\U@[]}%
-}
-\def\U@[#1]{%
-    \ifx\relax#1\relax
-        \char"1230B%
-    \else \ifnum #1=2
-        \char"12311%
-    \else \ifnum #1=3
-        \char"12147%
-    \else \ifnum #1=5
-        \char"12137\char"122DB%
-    \else \ifnum #1=8
-        \char"121C7%
-    \fi\fi\fi\fi\fi}
-\def\CE{%
-    \@ifnextchar[{\CE@}{\CE@[]}%
-}
-\def\CE@[#1]{%
-    \ifx\relax#1\relax
-        \char"122BA%
-    \else \ifnum #1=12
-        \char"1223A%
-    \fi\fi}
-\def\SIxSA{%
-    \@ifnextchar[{\SIxSA@}{\SIxSA@[]}%
-}
-\def\SIxSA@[#1]{%
-    \ifx\relax#1\relax
-        \char"100000%
-    \else \ifnum #1=2
-        \char"100000%
-    \fi\fi}
-\newcommand{\RAD}{\char"122E5}
-\newcommand{\GEE}{\char"12101}
-\newcommand{\RI}{\char"12291}
-\def\TUR{%
-    \@ifnextchar[{\TUR@}{\TUR@[]}%
-}
-\def\TUR@[#1]{%
-    \ifx\relax#1\relax
-        \char"12309%
-    \else \ifnum #1=3
-        \HittC\char"12263\char"121EC\Hitt%
-    \fi\fi}
-\newcommand{\KUN}{\char"121B2}
-\newcommand{\NUN}{\char"12263}
-\newcommand{\TI}{\char"122FE}
-\def\MAC{%
-    \@ifnextchar[{\MAC@}{\MAC@[]}%
-}
-\def\MAC@[#1]{%
-    \ifx\relax#1\relax
-        \char"12047%
-    \else \ifnum #1=2
-        \char"12227%
-    \fi\fi}
-\newcommand{\NAM}{\char"12246}
-\newcommand{\EN}{\char"12097}
-\newcommand{\INANNA}{\char"12239}
-\newcommand{\RU}{\char"12292}
-\newcommand{\IB}{\char"12141}
-\newcommand{\ZUL}{\char"12084}
-\newcommand{\KIN}{\char"121A5}
-\newcommand{\CUCANA}{\char"1245A}
-\newcommand{\KAB}{\char"1218F}
-\newcommand{\HUB}{\char"1213D}
-\newcommand{\GIDIM}{\char"12107}
-\newcommand{\TUK}{\char"12307}
-\def\SILA{%
-    \@ifnextchar[{\SILA@}{\SILA@[]}%
-}
-\def\SILA@[#1]{%
-    \ifx\relax#1\relax
-        \char"120E2%
-    \else \ifnum #1=4
-        \char"120E2%
-    \fi\fi}
-\def\BUGIN{%
-    \@ifnextchar[{\BUGIN@}{\BUGIN@[]}%
-}
-\def\BUGIN@[#1]{%
-    \ifx\relax#1\relax
-        \char"121B9%
-    \else \ifnum #1=2
-        \char"121C5%
-    \fi\fi}
-\def\GA{%
-    \@ifnextchar[{\GA@}{\GA@[]}%
-}
-\def\GA@[#1]{%
-    \ifx\relax#1\relax
-        \char"120B5%
-    \else \ifnum #1=2
-        \char"120B7%
-    \fi\fi}
-\newcommand{\AMA}{\char"120BC}
-\def\UR{%
-    \@ifnextchar[{\UR@}{\UR@[]}%
-}
-\def\UR@[#1]{%
-    \ifx\relax#1\relax
-        \char"12328%
-    \else \ifnum #1=2
-        \char"1232B%
-    \else \ifnum #1=3
-        \char"120E1%
-    \fi\fi\fi}
-\def\ESAG{%
-    \@ifnextchar[{\ESAG@}{\ESAG@[]}%
-}
-\def\ESAG@[#1]{%
-    \ifx\relax#1\relax
-        \char"120E5%
-    \else \ifnum #1=2
-        \char"120E5%
-    \fi\fi}
-\newcommand{\GALGA}{\char"120CC}
-\def\GAN{%
-    \@ifnextchar[{\GAN@}{\GAN@[]}%
-}
-\def\GAN@[#1]{%
-    \ifx\relax#1\relax
-        \char"120F6%
-    \else \ifnum #1=2
-        \char"120F7%
-    \fi\fi}
-\newcommand{\EREN}{\char"1209E}
-\def\CEC{%
-    \@ifnextchar[{\CEC@}{\CEC@[]}%
-}
-\def\CEC@[#1]{%
-    \ifx\relax#1\relax
-        \char"122C0%
-    \else \ifnum #1=2
-        \char"122C1%
-    \fi\fi}
-\def\CUNIGIN{%
-    \@ifnextchar[{\CUNIGIN@}{\CUNIGIN@[]}%
-}
-\def\CUNIGIN@[#1]{%
-    \ifx\relax#1\relax
-        \HittC\char"122D7\Hitt\char"121B8%
-    \else \ifnum #1=2
-        \HittC\char"122D7\Hitt\char"121B8%
-    \fi\fi}
-\def\SIG{%
-    \@ifnextchar[{\SIG@}{\SIG@[]}%
-}
-\def\SIG@[#1]{%
-    \ifx\relax#1\relax
-        \char"122DD%
-    \else \ifnum #1=2
-        \char"122E0%
-    \else \ifnum #1=4
-        \char"122DE%
-    \else \ifnum #1=5
-        \char"12146\char"1209F%
-    \else \ifnum #1=7
-        \char"1214A%
-    \fi\fi\fi\fi\fi}
-\newcommand{\SIGiiMUNUS}{\char"122E0\HittC\char"122A9\Hitt}
-\newcommand{\IG}{\char"12145}
-\def\KU{%
-    \@ifnextchar[{\KU@}{\KU@[]}%
-}
-\def\KU@[#1]{%
-    \ifx\relax#1\relax
-        \char"121AA%
-    \else \ifnum #1=3
-        \char"121AC%
-    \else \ifnum #1=7
-        \char"121AF%
-    \fi\fi\fi}
-\newcommand{\GICIMMAR}{\char"122B7}
-\def\DARA{%
-    \@ifnextchar[{\DARA@}{\DARA@[]}%
-}
-\def\DARA@[#1]{%
-    \ifx\relax#1\relax
-        \char"12070%
-    \else \ifnum #1=3
-        \char"12070%
-    \fi\fi}
-\newcommand{\NI}{\char"1224C}
-\def\NA{%
-    \@ifnextchar[{\NA@}{\NA@[]}%
-}
-\def\NA@[#1]{%
-    \ifx\relax#1\relax
-        \char"1223E%
-    \else \ifnum #1=2
-        \char"1223F%
-    \else \ifnum #1=4
-        \char"1238E%
-    \fi\fi\fi}
-\newcommand{\NIM}{\char"1224F}
-\newcommand{\GAG}{\char"12195}
-\newcommand{\NEE}{\char"1224D}
-\newcommand{\IR}{\char"12155}
-\def\LU{%
-    \@ifnextchar[{\LU@}{\LU@[]}%
-}
-\def\LU@[#1]{%
-    \ifx\relax#1\relax
-        \char"121FB%
-    \else \ifnum #1=2
-        \char"121FD%
-    \else \ifnum #1=3
-        \char"12216%
-    \fi\fi\fi}
-\newcommand{\ACGAB}{\char"1203F}
-\def\ME{%
-    \@ifnextchar[{\ME@}{\ME@[]}%
-}
-\def\ME@[#1]{%
-    \ifx\relax#1\relax
-        \char"12228%
-    \else \ifnum #1=3
-        \char"1201E%
-    \fi\fi}
-\def\GUN{%
-    \@ifnextchar[{\GUN@}{\GUN@[]}%
-}
-\def\GUN@[#1]{%
-    \ifx\relax#1\relax
-        \char"1206F%
-    \else \ifnum #1=3
-        \char"1206F%
-    \fi\fi}
-\newcommand{\ITI}{\char"12317}
-\newcommand{\CINIG}{\char"122D2}
-\newcommand{\SI}{\char"122DB}
-\def\MA{%
-    \@ifnextchar[{\MA@}{\MA@[]}%
-}
-\def\MA@[#1]{%
-    \ifx\relax#1\relax
-        \char"12220%
-    \else \ifnum #1=2
-        \char"12223%
-    \fi\fi}
-\def\CUDUN{%
-    \@ifnextchar[{\CUDUN@}{\CUDUN@[]}%
-}
-\def\CUDUN@[#1]{%
-    \ifx\relax#1\relax
-        \char"12088%
-    \else \ifnum #1=3
-        \char"12088%
-    \fi\fi}
-\newcommand{\DIRI}{\char"122DB\char"12000}
-\newcommand{\TAB}{\char"122F0}
-\newcommand{\CUM}{\char"122F3}
-\newcommand{\AZ}{\char"1228D}
-\newcommand{\UG}{\char"1228C}
-\newcommand{\NIB}{\char"1228B}
-\newcommand{\UKU}{\char"12087}
-\newcommand{\UM}{\char"1231D}
-\newcommand{\NAB}{\char"1202E}
-\newcommand{\MUL}{\char"1202F}
-\def\DE{%
-    \@ifnextchar[{\DE@}{\DE@[]}%
-}
-\def\DE@[#1]{%
-    \ifx\relax#1\relax
-        \char"12324%
-    \else \ifnum #1=2
-        \char"12324%
-    \fi\fi}
-\newcommand{\AZU}{\char"12259}
-\newcommand{\AD}{\char"1201C}
-\def\KEC{%
-    \@ifnextchar[{\KEC@}{\KEC@[]}%
-}
-\def\KEC@[#1]{%
-    \ifx\relax#1\relax
-        \char"1219F%
-    \else \ifnum #1=2
-        \char"1219F%
-    \fi\fi}
-\def\EZEN{%
-    \@ifnextchar[{\EZEN@}{\EZEN@[]}%
-}
-\def\EZEN@[#1]{%
-    \ifx\relax#1\relax
-        \char"12378%
-    \else \ifnum #1=4
-        \char"12378%
-    \fi\fi}
-\def\ZI{%
-    \@ifnextchar[{\ZI@}{\ZI@[]}%
-}
-\def\ZI@[#1]{%
-    \ifx\relax#1\relax
-        \char"12363%
-    \else \ifnum #1=2
-        \char"12362%
-    \fi\fi}
-\newcommand{\URUDU}{\char"1234F}
-\def\MURU{%
-    \@ifnextchar[{\MURU@}{\MURU@[]}%
-}
-\def\MURU@[#1]{%
-    \ifx\relax#1\relax
-        \char"12318%
-    \else \ifnum #1=2
-        \char"12318%
-    \fi\fi}
-\newcommand{\UNU}{\char"12014}
-\newcommand{\MIC}{\char"12229}
-\def\BAD{%
-    \@ifnextchar[{\BAD@}{\BAD@[]}%
-}
-\def\BAD@[#1]{%
-    \ifx\relax#1\relax
-        \char"12041%
-    \else \ifnum #1=3
-        \char"120A6%
-    \fi\fi}
-\newcommand{\LUGAL}{\char"12217}
-\def\DIM{%
-    \@ifnextchar[{\DIM@}{\DIM@[]}%
-}
-\def\DIM@[#1]{%
-    \ifx\relax#1\relax
-        \char"12074%
-    \else \ifnum #1=3
-        \char"12290\HittC\char"120F5\Hitt%
-    \fi\fi}
-\newcommand{\PAN}{\char"1227C}
-\def\NINDA{%
-    \@ifnextchar[{\NINDA@}{\NINDA@[]}%
-}
-\def\NINDA@[#1]{%
-    \ifx\relax#1\relax
-        \char"12252%
-    \else \ifnum #1=2
-        \char"12252%
-    \fi\fi}
-\newcommand{\KUM}{\char"12123}
-\newcommand{\AG}[1][]{
-    \ifx\relax#1\relax
-        {\char"1201D}
-    \else \ifnum #1=2
-        {\char"12258}
-    \fi\fi
-}
-\def\AG{%
-    \@ifnextchar[{\AG@}{\AG@[]}%
-}
-\def\AG@[#1]{%
-    \ifx\relax#1\relax
-        \char"1201D%
-    \else \ifnum #1=2
-        \char"12258%
-    \fi\fi}
-\newcommand{\GAZ}{\char"12124}
-\def\CAM{%
-    \@ifnextchar[{\CAM@}{\CAM@[]}%
-}
-\def\CAM@[#1]{%
-    \ifx\relax#1\relax
-        \char"1225A\char"12000\char"1202D%
-    \else \ifnum #1=2
-        \char"1225A\char"12000\char"1202D%
-    \else \ifnum #1=3
-        \char"12253%
-    \fi\fi\fi}
-\newcommand{\EGIR}{\char"12095}
-\newcommand{\LIL}{\char"121F8}
-\def\KAC{%
-    \@ifnextchar[{\KAC@}{\KAC@[]}%
-}
-\def\KAC@[#1]{%
-    \ifx\relax#1\relax
-        \char"1207D%
-    \else \ifnum #1=4
-        \char"1207D%
-    \fi\fi}
-\def\DUB{%
-    \@ifnextchar[{\DUB@}{\DUB@[]}%
-}
-\def\DUB@[#1]{%
-    \ifx\relax#1\relax
-        \char"1207E%
-    \else \ifnum #1=2
-        \char"12080%
-    \fi\fi}
-\newcommand{\GECTIN}{\char"120FE}
-\newcommand{\UC}{\char"12351}
-\newcommand{\UKKIN}{\char"1215E}
-\newcommand{\NUNDUM}{\char"1217B}
-\def\SU{%
-    \@ifnextchar[{\SU@}{\SU@[]}%
-}
-\def\SU@[#1]{%
-    \ifx\relax#1\relax
-        \char"122E2%
-    \else \ifnum #1=6
-        \char"1217E%
-    \fi\fi}
-\newcommand{\KAxURii}{\char"12387}
-\newcommand{\KAxPA}{\char"12384}
-\newcommand{\KAxGIC}{\char"12380}
-\def\KIR{%
-    \@ifnextchar[{\KIR@}{\KIR@[]}%
-}
-\def\KIR@[#1]{%
-    \ifx\relax#1\relax
-        \char"1216F%
-    \else \ifnum #1=14
-        \char"1216F%
-    \fi\fi}
-\newcommand{\KAxU}{\char"12187}
-\newcommand{\KAxLUM}{\char"12383}
-\def\ZU{%
-    \@ifnextchar[{\ZU@}{\ZU@[]}%
-}
-\def\ZU@[#1]{%
-    \ifx\relax#1\relax
-        \char"1236A%
-    \else \ifnum #1=9
-        \char"12189%
-    \fi\fi}
-\def\BUN{%
-    \@ifnextchar[{\BUN@}{\BUN@[]}%
-}
-\def\BUN@[#1]{%
-    \ifx\relax#1\relax
-        \char"1216E%
-    \else \ifnum #1=2
-        \char"1216E%
-    \fi\fi}
-\def\TUKUR{%
-    \@ifnextchar[{\TUKUR@}{\TUKUR@[]}%
-}
-\def\TUKUR@[#1]{%
-    \ifx\relax#1\relax
-        \char"12181%
-    \else \ifnum #1=2
-        \char"12181%
-    \fi\fi}
-\def\MU{%
-    \@ifnextchar[{\MU@}{\MU@[]}%
-}
-\def\MU@[#1]{%
-    \ifx\relax#1\relax
-        \char"1222C%
-    \else \ifnum #1=7
-        \char"12172%
-    \fi\fi}
-\newcommand{\EME}{\char"12174}
-\newcommand{\NAG}{\char"12158}
-\newcommand{\GU}[1][]{
-    \ifx\relax#1\relax
-        {\char"12116}
-    \else \ifnum #1=2
-        {\char"12118}
-    \else \ifnum #1=7
-        {\char"12165}
-    \fi\fi\fi
-}
-\def\GU{%
-    \@ifnextchar[{\GU@}{\GU@[]}%
-}
-\def\GU@[#1]{%
-    \ifx\relax#1\relax
-        \char"12116%
-    \else \ifnum #1=2
-        \char"12118%
-    \else \ifnum #1=7
-        \char"12165%
-    \fi\fi\fi}
-\newcommand{\KAxACiii}{\char"1237F}
-\newcommand{\IC}{\char"12156}
-\def\KUC{%
-    \@ifnextchar[{\KUC@}{\KUC@[]}%
-}
-\def\KUC@[#1]{%
-    \ifx\relax#1\relax
-        \char"12156%
-    \else \ifnum #1=7
-        \char"12156%
-    \fi\fi}
-\newcommand{\UB}{\char"12312}
-\newcommand{\BI}{\char"12049}
-\newcommand{\CEM}{\char"122C6}
-\newcommand{\LUNGA}{\char"122C6}
-\newcommand{\AMAR}{\char"1202B}
-\newcommand{\SISKUR}{\char"1202C}
-\newcommand{\GUD}{\char"1211E}
-\newcommand{\TA}{\char"122EB}
-\def\IL{%
-    \@ifnextchar[{\IL@}{\IL@[]}%
-}
-\def\IL@[#1]{%
-    \ifx\relax#1\relax
-        \char"1214B%
-    \else \ifnum #1=2
-        \char"1214D%
-    \fi\fi}
-\newcommand{\DUG}{\char"12081}
-\newcommand{\BAPPIR}{\char"122CB}
-\newcommand{\GAB}{\char"120EE}
-\newcommand{\DUH}{\char"12083}
-\newcommand{\GIM}{\char"12076}
-\newcommand{\UMBIN}{\char"12322}
-\def\KA{%
-    \@ifnextchar[{\KA@}{\KA@[]}%
-}
-\def\KA@[#1]{%
-    \ifx\relax#1\relax
-        \char"12157%
-    \else \ifnum #1=2
-        \char"1218D%
-    \fi\fi}
-\newcommand{\AM}{\char"12120}
-\newcommand{\NE}{\char"12248}
-\def\LAL{%
-    \@ifnextchar[{\LAL@}{\LAL@[]}%
-}
-\def\LAL@[#1]{%
-    \ifx\relax#1\relax
-        \char"121F2%
-    \else \ifnum #1=3
-        \char"122ED%
-    \fi\fi}
-\newcommand{\TAH}{\char"1222D}
-\newcommand{\GIBIL}{\char"1224B}
-\newcommand{\GAD}{\char"120F0}
-\newcommand{\CAB}{\char"1227A\char"12141}
-\newcommand{\MACKIM}{\char"1227A\char"1207D}
-\newcommand{\SIPA}{\char"1227A\char"121FB}
-\newcommand{\GIC}{\char"12111}
-\newcommand{\HAB}{\char"121B8}
-\def\TUL{%
-    \@ifnextchar[{\TUL@}{\TUL@[]}%
-}
-\def\TUL@[#1]{%
-    \ifx\relax#1\relax
-        \char"121E5%
-    \else \ifnum #1=2
-        \char"121E5%
-    \fi\fi}
-\newcommand{\LAGABxSUM}{\char"121E1}
-\newcommand{\AL}{\char"12020}
-\newcommand{\GUR}{\char"12125}
-\newcommand{\LAGAR}{\char"121EC}
-\def\UTUL{%
-    \@ifnextchar[{\UTUL@}{\UTUL@[]}%
-}
-\def\UTUL@[#1]{%
-    \ifx\relax#1\relax
-        \char"1205F%
-    \else \ifnum #1=5
-        \char"1205F%
-    \fi\fi}
-\newcommand{\UBUR}{\char"1205B}
-\newcommand{\EKISIMvxAMAC}{\char"12057}
-\newcommand{\MAR}{\char"12225}
-\newcommand{\SAG}{\char"12295}
-\newcommand{\GURUN}{\char"12127}
-\newcommand{\KID}{\char"121A4}
-\newcommand{\KAL}{\char"12197}
-\newcommand{\UN}{\char"12326}
-\newcommand{\LUH}{\char"1221B}
-\def\E{%
-    \@ifnextchar[{\E@}{\E@[]}%
-}
-\def\E@[#1]{%
-    \ifx\relax#1\relax
-        \char"1208A%
-    \else \ifnum #1=2
-        \char"1208D%
-    \fi\fi}
-\newcommand{\SA}{\char"12293}
-\newcommand{\DUR}{\char"12119}
-\newcommand{\UZU}{\char"1235C}
-\newcommand{\NIR}{\char"1226A}
-\newcommand{\BA}{\char"12040}
-\def\MUD{%
-    \@ifnextchar[{\MUD@}{\MUD@[]}%
-}
-\def\MUD@[#1]{%
-    \ifx\relax#1\relax
-        \char"12137\char"1212D%
-    \else \ifnum #1=4
-        \char"121AA\char"1230B\char"12195%
-    \fi\fi}
-\def\DU{%
-    \@ifnextchar[{\DU@}{\DU@[]}%
-}
-\def\DU@[#1]{%
-    \ifx\relax#1\relax
-        \char"1207A%
-    \else \ifnum #1=6
-        \char"121EF%
-    \fi\fi}
-\def\TUG{%
-    \@ifnextchar[{\TUG@}{\TUG@[]}%
-}
-\def\TUG@[#1]{%
-    \ifx\relax#1\relax
-        \char"12306%
-    \else \ifnum #1=2
-        \char"12306%
-    \fi\fi}
-\newcommand{\DA}{\char"12055}
-\newcommand{\ENGUR}{\char"121C9}
-\newcommand{\I}{\char"1213F}
-\newcommand{\IA}{\char"12140}
-\newcommand{\HACHUR}{\char"12222}
-\def\GUG{%
-    \@ifnextchar[{\GUG@}{\GUG@[]}%
-}
-\def\GUG@[#1]{%
-    \ifx\relax#1\relax
-        \char"12216%
-    \else \ifnum #1=2
-        \char"12216%
-    \fi\fi}
-\newcommand{\NIMGIR}{\char"12216}
-\def\GIN{%
-    \@ifnextchar[{\GIN@}{\GIN@[]}%
-}
-\def\GIN@[#1]{%
-    \ifx\relax#1\relax
-        \char"12086%
-    \else \ifnum #1=2
-        \char"12086%
-    \fi\fi}
-\newcommand{\GIGIR}{\char"121C0}
-\newcommand{\BALAG}{\char"12046}
-\newcommand{\ALAM}{\char"12029}
-\def\TAG{%
-    \@ifnextchar[{\TAG@}{\TAG@[]}%
-}
-\def\TAG@[#1]{%
-    \ifx\relax#1\relax
-        \char"122FA%
-    \else \ifnum #1=4
-        \char"122FA%
-    \fi\fi}
-\newcommand{\KISAL}{\char"121A6}
-\newcommand{\CEN}{\char"122BF}
-\newcommand{\SANGA}{\char"122C3}
-\newcommand{\LAHTA}{\char"12064}
-\newcommand{\RA}{\char"1228F}
-\def\GI{%
-    \@ifnextchar[{\GI@}{\GI@[]}%
-}
-\def\GI@[#1]{%
-    \ifx\relax#1\relax
-        \char"12100%
-    \else \ifnum #1=4
-        \char"12104%
-    \fi\fi}
-\def\BAR{%
-    \@ifnextchar[{\BAR@}{\BAR@[]}%
-}
-\def\BAR@[#1]{%
-    \ifx\relax#1\relax
-        \char"12047%
-    \else \ifnum #1=2
-        \char"12048%
-    \fi\fi}
-\def\LAH{%
-    \@ifnextchar[{\LAH@}{\LAH@[]}%
-}
-\def\LAH@[#1]{%
-    \ifx\relax#1\relax
-        \char"1207B%
-    \else \ifnum #1=4
-        \char"1207B%
-    \fi\fi}
-\newcommand{\ZAG}{\char"12360}
-\def\GAR{%
-    \@ifnextchar[{\GAR@}{\GAR@[]}%
-}
-\def\GAR@[#1]{%
-    \ifx\relax#1\relax
-        \char"120FC%
-    \else \ifnum #1=3
-        \char"120FC%
-    \fi\fi}
-\def\AC{%
-    \@ifnextchar[{\AC@}{\AC@[]}%
-}
-\def\AC@[#1]{%
-    \ifx\relax#1\relax
-        \char"12038%
-    \else \ifnum #1=2
-        \char"1203E%
-    \fi\fi}
-\newcommand{\GAL}{\char"120F2}
-\newcommand{\DAG}{\char"12056}
-\newcommand{\BUR}{\char"12053}
-\newcommand{\URI}{\char"12335}
-\newcommand{\GAM}{\char"120F5}
-\newcommand{\GLOSS}{\char"12471}
-\newcommand{\TE}{\char"122FC}
-\newcommand{\KAR}{\HittC\char"122FC\Hitt\char"12000}
-\def\CU{%
-    \@ifnextchar[{\CU@}{\CU@[]}%
-}
-\def\CU@[#1]{%
-    \ifx\relax#1\relax
-        \char"122D7%
-    \else \ifnum #1=2
-        \char"122D9%
-    \fi\fi}
-\newcommand{\GUKKALKUN}{\char"121FB\HittC\char"1213E\char"121B2\Hitt}
-\newcommand{\IDIGNA}{\HittC\char"12226\char"12118\char"120FC\Hitt}
-\def\UKUC{%
-    \@ifnextchar[{\UKUC@}{\UKUC@[]}%
-}
-\def\UKUC@[#1]{%
-    \ifx\relax#1\relax
-        \char"1213E%
-    \else \ifnum #1=2
-        \char"1213E%
-    \fi\fi}
-\newcommand{\PAB}{\char"1227D}
-\newcommand{\PABHAL}{\HittB\char"1227D\Hitt\char"1212C}
-\def\BULUG{%
-    \@ifnextchar[{\BULUG@}{\BULUG@[]}%
-}
-\def\BULUG@[#1]{%
-    \ifx\relax#1\relax
-        \HittC\char"1227D\Hitt%
-    \else \ifnum #1=3
-        \HittC\char"1227D\Hitt%
-    \fi\fi}
-\newcommand{\GILIM}{\char"12103}
-\newcommand{\KASKAL}{\char"1219C}
-\newcommand{\KIB}{\char"12112}
-\newcommand{\DUL}{\char"1230B\char"12306}
-\newcommand{\ICTAR}{\char"1230B\char"1206F}
-\newcommand{\UDUN}{\char"1230B\char"1222C}
-\newcommand{\MI}{\char"1222A}
-\newcommand{\DUGUD}{\char"12082}
-\newcommand{\GIG}{\char"1222A\char"1226D}
-\newcommand{\CAGAN}{\char"1230B\char"120F6}
-\newcommand{\GUL}{\char"12122}
-\newcommand{\UGU}{\char"1230B\char"12157}
-\newcommand{\KIC}{\char"121A7}
-\def\BURU{%
-    \@ifnextchar[{\BURU@}{\BURU@[]}%
-}
-\def\BURU@[#1]{%
-    \ifx\relax#1\relax
-        \char"12098%
-    \else \ifnum #1=14
-        \char"12098%
-    \fi\fi}
-\newcommand{\UL}{\char"1230C}
-\newcommand{\AMARxKUvi}{\char"12372}
-\def\AB{%
-    \@ifnextchar[{\AB@}{\AB@[]}%
-}
-\def\AB@[#1]{%
-    \ifx\relax#1\relax
-        \char"1200A%
-    \else \ifnum #1=2
-        \char"12016%
-    \fi\fi}
-\def\KISIM{%
-    \@ifnextchar[{\KISIM@}{\KISIM@[]}%
-}
-\def\KISIM@[#1]{%
-    \ifx\relax#1\relax
-        \char"121A8%
-    \else \ifnum #1=5
-        \char"121A8%
-    \fi\fi}
-\def\TUM{%
-    \@ifnextchar[{\TUM@}{\TUM@[]}%
-}
-\def\TUM@[#1]{%
-    \ifx\relax#1\relax
-        \char"12308%
-    \else \ifnum #1=3
-        \char"12250%
-    \fi\fi}
-\newcommand{\KISIMvxUiiMAC}{\char"100007}
-\newcommand{\ABiixA}{\char"12371}
-\newcommand{\LIC}{\char"121FA}
-\newcommand{\ELEVEN}{\char"1230B\char"12079}
-\newcommand{\IGI}{\char"12146}
-\newcommand{\CI}{\char"12146}
-\newcommand{\AR}{\char"12148}
-\newcommand{\HUL}{\char"12146\char"12328}
-\newcommand{\AGRIG}{\char"12146\char"1207E}
-\def\PA{%
-    \@ifnextchar[{\PA@}{\PA@[]}%
-}
-\def\PA@[#1]{%
-    \ifx\relax#1\relax
-        \char"1227A%
-    \else \ifnum #1=3
-        \char"12146\char"12292%
-    \fi\fi}
-\def\CA{%
-    \@ifnextchar[{\CA@}{\CA@[]}%
-}
-\def\CA@[#1]{%
-    \ifx\relax#1\relax
-        \char"122AD%
-    \else \ifnum #1=2
-        \char"122FB%
-    \else \ifnum #1=3
-        \char"122AE%
-    \fi\fi\fi}
-\newcommand{\PAD}{\char"1227B}
-\newcommand{\TWENTY}{\char"1230B\char"1230B}
-\newcommand{\SAL}{\char"122A9}
-\newcommand{\DAM}{\char"1206E}
-\newcommand{\NIN}{\char"122A9\char"12306}
-\newcommand{\ZUM}{\char"1236E}
-\newcommand{\ANCE}{\char"12032}
-\newcommand{\ALIM}{\char"1210B}
-\def\GEME{%
-    \@ifnextchar[{\GEME@}{\GEME@[]}%
-}
-\def\GEME@[#1]{%
-    \ifx\relax#1\relax
-        \char"122A9\char"121B3%
-    \else \ifnum #1=2
-        \char"122A9\char"121B3%
-    \fi\fi}
-\newcommand{\LAM}{\char"121F4}
-\newcommand{\EL}{\char"12096}
-\newcommand{\NAGAR}{\char"12244}
-\newcommand{\CAH}{\char"122DA}
-\newcommand{\LUM}{\char"1221D}
-\newcommand{\DI}{\char"12072}
-\newcommand{\KI}{\char"121A0}
-\def\URU{%
-    \@ifnextchar[{\URU@}{\URU@[]}%
-}
-\def\URU@[#1]{%
-    \ifx\relax#1\relax
-        \char"12337%
-    \else \ifnum #1=5
-        \char"122FD%
-    \fi\fi}
-\newcommand{\UD}{\char"12313}
-\newcommand{\WA}{\char"1227F}
-\newcommand{\WAAP}{\char"12281}
-\newcommand{\WII}{\char"12285}
-\newcommand{\WIPI}{\char"12282}
-\def\WUU{%
-    \@ifnextchar[{\WUU@}{\WUU@[]}%
-}
-\def\WUU@[#1]{%
-    \ifx\relax#1\relax
-        \char"12287%
-    \else \ifnum #1=2
-        \char"12288%
-    \fi\fi}
-\newcommand{\WEE}{\char"12284}
-\newcommand{\WUPU}{\char"12283}
-\newcommand{\WIIP}{\char"12286}
-\newcommand{\WAA}{\char"12280}
-\def\ERIN{%
-    \@ifnextchar[{\ERIN@}{\ERIN@[]}%
-}
-\def\ERIN@[#1]{%
-    \ifx\relax#1\relax
-        \char"1209F%
-    \else \ifnum #1=2
-        \char"1209F%
-    \fi\fi}
-\newcommand{\NUNUZ}{\char"1226D}
-\newcommand{\KUR}{\char"121B3}
-\newcommand{\TIN}{\char"12077}
-\newcommand{\THIRTY}{\char"1230D}
-\newcommand{\AH}{\char"12134}
-\newcommand{\HAR}{\char"1212F}
-\newcommand{\BIR}{\char"12135}
-\newcommand{\HI}{\char"1212D}
-\newcommand{\GACAN}{\char"120FD}
-\newcommand{\IM}{\char"1214E}
-\newcommand{\BU}{\char"1204D}
-\newcommand{\SUD}{\char"122E4}
-\newcommand{\MUC}{\char"12232}
-\newcommand{\LI}{\char"121F7}
-\newcommand{\TIR}{\char"12301}
-\newcommand{\NIDABA}{\char"122BA\char"12240}
-\newcommand{\TU}{\char"12305}
-\newcommand{\FIFTY}{\char"12410}
-\newcommand{\HUC}{\char"1212D\char"1210A}
-\newcommand{\SUHUR}{\char"122E6}
-\newcommand{\SUM}{\char"122E7}
-\newcommand{\LUL}{\char"10000A}
-\newcommand{\NAGA}{\char"12240}
-\newcommand{\CAR}{\char"122AC}
-\newcommand{\IN}{\char"12154}
-\newcommand{\KAM}{\char"12130}
-\newcommand{\DIC}{\char"12079}
-\newcommand{\ONE}{\char"12079}
-\newcommand{\SEVENTY}{\char"12079\char"1230B}
-\newcommand{\MEC}{\char"12228\char"1230D}
-\newcommand{\TWO}{\char"1222B}
-\def\LA{%
-    \@ifnextchar[{\LA@}{\LA@[]}%
-}
-\def\LA@[#1]{%
-    \ifx\relax#1\relax
-        \char"121B7%
-    \else \ifnum #1=5
-        \char"121F3%
-    \fi\fi}
-\def\CUR{%
-    \@ifnextchar[{\CUR@}{\CUR@[]}%
-}
-\def\CUR@[#1]{%
-    \ifx\relax#1\relax
-        \char"122E9%
-    \else \ifnum #1=4
-        \char"121F3\char"122AC%
-    \fi\fi}
-\newcommand{\A}{\char"12000}
-\def\ID{%
-    \@ifnextchar[{\ID@}{\ID@[]}%
-}
-\def\ID@[#1]{%
-    \ifx\relax#1\relax
-        \char"12009%
-    \else \ifnum #1=2
-        \char"12000\char"121C9%
-    \fi\fi}
-\newcommand{\ZA}{\char"1235D}
-\newcommand{\HA}{\char"12129}
-\newcommand{\THREE}{\char"12408}
-\newcommand{\FOUR}{\char"12409}
-\newcommand{\FIVE}{\char"1240A}
-\newcommand{\SIX}{\char"1240B}
-\newcommand{\SEVEN}{\char"1240C}
-\newcommand{\EIGHT}{\char"1240D}
-\newcommand{\NINE}{\char"1240E}
+
+\ExplSyntaxOn
+
+% Font selection commands, meant to be basically internal
+\newcommand{\swapa}{\setmainfont[ExternalLocation=Fonts/]{UllikummiA.ttf}\Large}
+\newcommand{\swapb}{\setmainfont[ExternalLocation=Fonts/]{UllikummiB.ttf}\Large}
+\newcommand{\swapc}{\setmainfont[ExternalLocation=Fonts/]{UllikummiC.ttf}\Large}
+\newcommand{\swaplat}{\setmainfont{Charis SIL}\normalsize}
+
+% Define token-to-Unicode mapping
+\prop_new:N \c_hitt_dict
+\prop_set_from_keyval:Nn \c_hitt_dict {
+    hal=1212C,
+    pec1=1227E,
+    pec2=1227E,
+    bal=12044,
+    cir=122D3,
+    gir=1212B,
+    gir2=12108,
+    gir3=1210A,
+    gir4=1230B\char"1201C,
+    tar=122FB,
+    an=1202D,
+    apin=12033,
+    mah=12224,
+    nu=12261,
+    kul=121B0,
+    numun=121B0,
+    arad=12034,
+    mun=12075,
+    nar=1221C,
+    qa=122E1,
+    mug=1222E,
+    uz=122BB,
+    uz6=1235A,
+    hu=12137,
+    u=1230B,
+    u2=12311,
+    u3=12147,
+    u5=12137\char"122DB,
+    u8=121C7,
+    ce=122BA,
+    ce12=1223A,
+    sixsa=100000,
+    sixsa2=100000,
+    rad=122E5,
+    gee=12101,
+    ri=12291,
+    tur=12309,
+    tur3=12263\char"121EC,
+    kun=121B2,
+    nun=12263,
+    ti=122FE,
+    mac=12047,
+    mac2=12227,
+    nam=12246,
+    en=12097,
+    inanna=12239,
+    ru=12292,
+    ib=12141,
+    zul=12084,
+    kin=121A5,
+    cucana=1245A,
+    kab=1218F,
+    hub=1213D,
+    gidim=12107,
+    tuk=12307,
+    sila=120E2,
+    sila4=120E2,
+    bugin=121B9,
+    bugin2=121C5,
+    ga=120B5,
+    ga2=120B7,
+    ama=120BC,
+    ur=12328,
+    ur2=1232B,
+    ur3=120E1,
+    esag=120E5,
+    esag2=120E5,
+    galga=120CC,
+    gan=120F6,
+    gan2=120F7,
+    eren=1209E,
+    cec=122C0,
+    cec2=122C1,
+    cunigin=0\swapc\char"122D7\swapa\char"121B8,
+    cunigin2=0\swapc\char"122D7\swapa\char"121B8,
+    sig=122DD,
+    sig2=122E0,
+    sig4=122DE,
+    sig5=12146\char"1209F,
+    sig7=1214A,
+    sig2munus=122E0\swapc\char"122A9\swapa,
+    ig=12145,
+    ku=121AA,
+    ku3=121AC,
+    ku7=121AF,
+    gicimmar=122B7,
+    dara=12070,
+    dara3=12070,
+    ni=1224C,
+    na=1223E,
+    na2=1223F,
+    na4=1238E,
+    nim=1224F,
+    gag=12195,
+    nee=1224D,
+    ir=12155,
+    lu=121FB,
+    lu2=121FD,
+    lu3=12216,
+    acgab=1203F,
+    me=12228,
+    me3=1201E,
+    gun=1206F,
+    gun3=1206F,
+    iti=12317,
+    cinig=122D2,
+    si=122DB,
+    ma=12220,
+    ma2=12223,
+    cudun=12088,
+    cudun3=12088,
+    diri=122DB\char"12000,
+    tab=122F0,
+    cum=122F3,
+    az=1228D,
+    ug=1228C,
+    nib=1228B,
+    uku=12087,
+    um=1231D,
+    nab=1202E,
+    mul=1202F,
+    de=12324,
+    de2=12324,
+    azu=12259,
+    ad=1201C,
+    kec=1219F,
+    kec2=1219F,
+    ezen=12378,
+    ezen4=12378,
+    zi=12363,
+    zi2=12362,
+    urudu=1234F,
+    muru=12318,
+    muru2=12318,
+    unu=12014,
+    mic=12229,
+    bad=12041,
+    bad3=120A6,
+    lugal=12217,
+    dim=12074,
+    dim3=12290\swapc\char"120F5\swapa,
+    pan=1227C,
+    ninda=12252,
+    ninda2=12252,
+    kum=12123,
+    ag=1201D,
+    ag2=12258,
+    gaz=12124,
+    cam=1225A\char"12000\char"1202D,
+    cam2=1225A\char"12000\char"1202D,
+    cam3=12253,
+    egir=12095,
+    lil=121F8,
+    kac=1207D,
+    kac4=1207D,
+    dub=1207E,
+    dub2=12080,
+    gectin=120FE,
+    uc=12351,
+    ukkin=1215E,
+    nundum=1217B,
+    su=122E2,
+    su6=1217E,
+    kaxur2=12387,
+    kaxpa=12384,
+    kaxgic=12380,
+    kir=1216F,
+    kir14=1216F,
+    kaxu=12187,
+    kaxlum=12383,
+    zu=1236A,
+    zu9=12189,
+    bun=1216E,
+    bun2=1216E,
+    tukur=12181,
+    tukur2=12181,
+    mu=1222C,
+    mu7=12172,
+    eme=12174,
+    nag=12158,
+    gu=12116,
+    gu2=12118,
+    gu7=12165,
+    kaxac2=1237F,
+    ic=12156,
+    kuc=12156,
+    kuc7=12156,
+    ub=12312,
+    bi=12049,
+    cem=122C6,
+    lunga=122C6,
+    amar=1202B,
+    siskur=1202C,
+    gud=1211E,
+    ta=122EB,
+    il=1214B,
+    il2=1214D,
+    dug=12081,
+    bappir=122CB,
+    gab=120EE,
+    duh=12083,
+    gim=12076,
+    umbin=12322,
+    ka=12157,
+    ka2=1218D,
+    am=12120,
+    ne=12248,
+    lal=121F2,
+    lal3=122ED,
+    tah=1222D,
+    gibil=1224B,
+    gad=120F0,
+    cab=1227A\char"12141,
+    mackim=1227A\char"1207D,
+    sipa=1227A\char"121FB,
+    gic=12111,
+    hab=121B8,
+    tul=121E5,
+    tul2=121E5,
+    lagabxsum=121E1,
+    al=12020,
+    gur=12125,
+    lagar=121EC,
+    utul=1205F,
+    utul5=1205F,
+    ubur=1205B,
+    ekisim5xamac=12057,
+    mar=12225,
+    sag=12295,
+    gurun=12127,
+    kid=121A4,
+    kal=12197,
+    un=12326,
+    luh=1221B,
+    e=1208A,
+    e2=1208D,
+    sa=12293,
+    dur=12119,
+    uzu=1235C,
+    nir=1226A,
+    ba=12040,
+    mud=12137\char"1212D,
+    mud4=121AA\char"1230B\char"12195,
+    du=1207A,
+    du6=121EF,
+    tug=12306,
+    tug2=12306,
+    da=12055,
+    engur=121C9,
+    i=1213F,
+    ia=12140,
+    hachur=12222,
+    gug=12216,
+    gug2=12216,
+    nimgir=12216,
+    gin=12086,
+    gin2=12086,
+    gigir=121C0,
+    balag=12046,
+    alam=12029,
+    tag=122FA,
+    tag4=122FA,
+    kisal=121A6,
+    cen=122BF,
+    sanga=122C3,
+    lahta=12064,
+    ra=1228F,
+    gi=12100,
+    gi4=12104,
+    bar=12047,
+    bar2=12048,
+    lah=1207B,
+    lah4=1207B,
+    zag=12360,
+    gar=120FC,
+    gar3=120FC,
+    ac=12038,
+    ac2=1203E,
+    gal=120F2,
+    dag=12056,
+    bur=12053,
+    uri=12335,
+    gam=120F5,
+    gloss=12471,
+    te=122FC,
+    kar=0\swapc\char"122FC\swapa\char"12000,
+    cu=122D7,
+    cu2=122D9,
+    gukkalkun=121FB\swapc\char"1213E\char"121B2\swapa,
+    idigna=0\swapc\char"12226\char"12118\char"120FC\swapa,
+    ukuc=1213E,
+    ukuc2=1213E,
+    pab=1227D,
+    pabhal=0\swapb\char"1227D\swapa\char"1212C,
+    bulug=0\swapc\char"1227D,
+    bulug3=0\swapc\char"1227D,
+    gilim=12103,
+    kaskal=1219C,
+    kib=12112,
+    dul=1230B\char"12306,
+    ictar=1230B\char"1206F,
+    udun=1230B\char"1222C,
+    mi=1222A,
+    dugud=12082,
+    gig=1222A\char"1226D,
+    cagan=1230B\char"120F6,
+    gul=12122,
+    ugu=1230B\char"12157,
+    kic=121A7,
+    buru=12098,
+    buru14=12098,
+    ul=1230C,
+    amarxku6=12372,
+    ab=1200A,
+    ab2=12016,
+    kisim=121A8,
+    kisim5=121A8,
+    tum=12308,
+    tum3=12250,
+    kisim5xu2mac=100007,
+    ab2xa=12371,
+    lic=121FA,
+    11=1230B\char"12079,
+    igi=12146,
+    ci=12146,
+    ar=12148,
+    hul=12146\char"12328,
+    agrig=12146\char"1207E,
+    pa=1227A,
+    pa3=12146\char"12292,
+    ca=122AD,
+    ca2=122FB,
+    ca3=122AE,
+    pad=1227B,
+    20=1230B\char"1230B,
+    sal=122A9,
+    dam=1206E,
+    nin=122A9\char"12306,
+    zum=1236E,
+    ance=12032,
+    alim=1210B,
+    geme=122A9\char"121B3,
+    geme2=122A9\char"121B3,
+    lam=121F4,
+    el=12096,
+    nagar=12244,
+    cah=122DA,
+    lum=1221D,
+    di=12072,
+    ki=121A0,
+    uru=12337,
+    uru5=122FD,
+    ud=12313,
+    wa=1227F,
+    waap=12281,
+    wii=12285,
+    wipi=12282,
+    wuu=12287,
+    wuu2=12288,
+    wee=12284,
+    wupu=12283,
+    wiip=12286,
+    waa=12280,
+    erin=1209F,
+    erin2=1209F,
+    nunuz=1226D,
+    kur=121B3,
+    tin=12077,
+    30=1230D,
+    ah=12134,
+    har=1212F,
+    bir=12135,
+    hi=1212D,
+    gacan=120FD,
+    im=1214E,
+    bu=1204D,
+    sud=122E4,
+    muc=12232,
+    li=121F7,
+    tir=12301,
+    nidaba=122BA\char"12240,
+    tu=12305,
+    50=12410,
+    huc=1212D\char"1210A,
+    suhur=122E6,
+    sum=122E7,
+    lul=10000A,
+    naga=12240,
+    car=122AC,
+    in=12154,
+    kam=12130,
+    dic=12079,
+    1=12079,
+    70=12079\char"1230B,
+    mec=12228\char"1230D,
+    2=1222B,
+    la=121B7,
+    la5=121F3,
+    cur=122E9,
+    cur4=121F3\char"122AC,
+    a=12000,
+    id=12009,
+    id2=1200\char"121C9,
+    za=1235D,
+    ha=12129,
+    3=12408,
+    4=12409,
+    5=1240A,
+    6=1240B,
+    7=1240C,
+    8=1240D,
+    9=1240E
+}
+
+\NewDocumentCommand\Hitt{O{}m}
+{
+    % switch cases for font selection with optional argument
+    \str_case:nn {#1}
+    {
+        {A} {\swapa}
+        {B} {\swapb}
+        {C} {\swapc}
+        {} {\swapa}
+    }
+
+    % splitting on spaces to allow for legibility of cuneiform inputs
+    \seq_set_split:Nnn {\l_tmpa_seq} {~} {#2}
+    \seq_show:N \l_tmpa_seq
+
+
+    \seq_map_function:NN \l_tmpa_seq \period_split
+
+    % swap back to Latin characters once all cuneiform is finished
+    \swaplat
+}
+
+% secondary split on periods for word components - keep all functions separate because nesting does bad things with expansion
+\cs_new:Npn \period_split #1
+{
+    \seq_set_split:Nnn {\l_tmpb_seq} {.} {#1}
+    \seq_show:N \l_tmpb_seq
+    \seq_map_function:NN \l_tmpb_seq \hitt_dict_lookup % map over all characters
+}
+
+\cs_new:Npn \hitt_dict_lookup #1
+{
+    \prop_if_in:NnTF \c_hitt_dict {#1}
+    {   
+        \prop_get:NnN \c_hitt_dict {#1} \l_tmpa_tl
+        % Use \char from the retrieved Unicode value
+        \char"\l_tmpa_tl\allowbreak
+    }
+    {
+        % If no match, output the character itself
+        \swaplat
+        {#1}
+        \swapa
+    }
+}
+
+\ExplSyntaxOff
+
+
